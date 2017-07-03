@@ -2,15 +2,24 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from mahjong_statboard.pantheon import PantheonClient
+
 
 class Instance(models.Model):
     STORAGE_LOCAL = 'local'
+    STORAGE_PANTHEON = 'pantheon'
     STORAGE_CHOICES = (
         (STORAGE_LOCAL, STORAGE_LOCAL),
+        (STORAGE_PANTHEON, STORAGE_PANTHEON),
     )
     name = models.TextField()
     description = models.TextField(blank=True)
     game_storage = models.CharField(max_length=16, choices=STORAGE_CHOICES, default=STORAGE_LOCAL)
+    pantheon_id = models.IntegerField(blank=True, null=True)
+
+    def get_games(self):
+        if self.game_storage == self.STORAGE_PANTHEON:
+            return PantheonClient().get_last_games(self.pantheon_id)['games']
 
 
 class Game(models.Model):
