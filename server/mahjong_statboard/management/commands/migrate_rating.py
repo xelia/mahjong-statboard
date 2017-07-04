@@ -18,16 +18,24 @@ class Command(BaseCommand):
         with transaction.atomic():
             for line in lines[::-1]:
                 date, player1, score1, player2, score2, player3, score3, player4, score4 = line
+                players = [player1, player2, player3, player4]
+                scores = [int(score1), int(score2), int(score3), int(score4)]
+                places = [sum(score <= other_score for other_score in scores) for score in scores]
+                if set(places) != {1, 2, 3, 4}:
+                    for place in (1, 2, 3, 4):
+                        if place not in places:
+                            places[places.index(place + 1)] -= 1
+
                 game, _ = models.Game.objects.get_or_create(
                     instance=instance,
                     date=datetime.datetime.strptime(date, '%d.%m.%Y'),
-                    player1=player1,
-                    player2=player2,
-                    player3=player3,
-                    player4=player4,
-                    score1=score1,
-                    score2=score2,
-                    score3=score3,
-                    score4=score4,
                 )
-                print(game, _)
+                for player, score, place, starting_position in zip(players, scores, places, (1,2,3,4)):
+                    gr, _ = models.GameResult.objects.get_or_create(
+                        game=game,
+                        player=player,
+                        place=place,
+                        score=score,
+                        starting_position=starting_position
+                    )
+                print(players, scores)

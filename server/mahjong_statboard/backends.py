@@ -1,5 +1,12 @@
-# -*- coding: utf-8 -*-
 import requests
+
+
+class LocalBackend(object):
+    pass
+
+
+class PantheonBackend(object):
+    pass
 
 
 class PantheonClient(object):
@@ -20,4 +27,3 @@ class PantheonClient(object):
 
     def get_last_games(self, event_id):
         return self._request('getLastGames', {"eventId": event_id, "limit": 10000, "offset": 0})
-

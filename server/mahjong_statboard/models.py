@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from mahjong_statboard.pantheon import PantheonClient
+from mahjong_statboard import backends
 
 
 class Instance(models.Model):
@@ -17,27 +17,12 @@ class Instance(models.Model):
     game_storage = models.CharField(max_length=16, choices=STORAGE_CHOICES, default=STORAGE_LOCAL)
     pantheon_id = models.IntegerField(blank=True, null=True)
 
-    def get_games(self):
+    @property
+    def backend(self):
         if self.game_storage == self.STORAGE_PANTHEON:
-            return PantheonClient().get_last_games(self.pantheon_id)['games']
-
-
-class Game(models.Model):
-    instance = models.ForeignKey(Instance)
-    date = models.DateField()
-    player1 = models.TextField()
-    player2 = models.TextField()
-    player3 = models.TextField()
-    player4 = models.TextField()
-    score1 = models.FloatField()
-    score2 = models.FloatField()
-    score3 = models.FloatField()
-    score4 = models.FloatField()
-    addition_time = models.DateTimeField(auto_now_add=True)
-    posted_by = models.ForeignKey(get_user_model(), null=True)
-
-    def __str__(self):
-        return 'Game date: {}'.format(self.date)
+            return backends.PantheonBackend()
+        else:
+            return backends.LocalBackend()
 
 
 class Rating(models.Model):
@@ -50,4 +35,23 @@ class Stats(models.Model):
     rating = models.ForeignKey(Rating)
     player = models.TextField()
     value = models.TextField()
+    game = models.TextField()
+
+
+# Tables for local backend
+class Game(models.Model):
+    instance = models.ForeignKey(Instance)
+    date = models.DateField()
+    addition_time = models.DateTimeField(auto_now_add=True)
+    posted_by = models.ForeignKey(get_user_model(), null=True)
+
+    def __str__(self):
+        return 'Game date: {}'.format(self.date)
+
+
+class GameResult(models.Model):
     game = models.ForeignKey(Game)
+    player = models.TextField()
+    score = models.IntegerField()
+    place = models.SmallIntegerField()
+    starting_position = models.SmallIntegerField()

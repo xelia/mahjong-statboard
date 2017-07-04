@@ -7,7 +7,7 @@ class AbstractRating(object):
         self.instance = instance
 
     def get_games(self):
-        return self.instance.get_games()
+        return self.instance.game_set.all()
 
     def get_rating(self, player):
         raise NotImplementedError
@@ -22,8 +22,5 @@ class AveragePlace(AbstractRating):
             for game_player, game_result in game['final_results'].items():
                 result[game_player] += game_result['place']
                 games[game_player] += 1
-        print(result)
-        print(games)
-        print(player, result[player], games[player])
         return result[player] / games[player] if player in result else None
 
