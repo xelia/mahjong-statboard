@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from mahjong_statboard import backends
+from mahjong_statboard import backends, rating
 
 
 class Instance(models.Model):
@@ -24,10 +24,22 @@ class Instance(models.Model):
         else:
             return backends.LocalBackend()
 
+    def __str__(self):
+        return self.name
+
 
 class Rating(models.Model):
     instance = models.ForeignKey(Instance)
-    rating_type = models.CharField(max_length=32)
+    rating_type = models.CharField(max_length=32, choices=((r, r) for r in rating.ALL_RATINGS))
+
+    def get_rating_processor(self):
+        return rating.ALL_RATINGS[self.rating_type](self)
+
+    def process(self):
+        self.get_rating_processor().process()
+
+    def __str__(self):
+        return '{}: {}'.format(self.instance.name, self.rating_type)
 
 
 class Stats(models.Model):
@@ -35,7 +47,10 @@ class Stats(models.Model):
     rating = models.ForeignKey(Rating)
     player = models.TextField()
     value = models.TextField()
-    game = models.TextField()
+    game = models.ForeignKey('Game', null=True)
+
+    def __str__(self):
+        return '{}, {}, {}, {}: {}'.format(self.instance.name, self.rating, self.player, self.game, self.value)
 
 
 # Tables for local backend

@@ -15,4 +15,5 @@ class RatingAdmin(admin.ModelAdmin):
 
 @admin.register(models.Stats)
 class StatsAdmin(admin.ModelAdmin):
-    pass
+    list_filter = ('rating', )
+    list_display = ('instance', 'rating', 'player', 'value', 'game')
