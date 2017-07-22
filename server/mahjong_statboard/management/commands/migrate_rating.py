@@ -26,7 +26,7 @@ class Command(BaseCommand):
                         if place not in places:
                             places[places.index(place + 1)] -= 1
 
-                game, _ = models.Game.objects.get_or_create(
+                game = models.Game.objects.create(
                     instance=instance,
                     date=datetime.datetime.strptime(date, '%d.%m.%Y'),
                 )

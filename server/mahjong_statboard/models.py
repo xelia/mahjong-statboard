@@ -2,7 +2,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from mahjong_statboard import backends, rating
+from mahjong_statboard import rating
 
 
 class Instance(models.Model):
@@ -17,13 +17,6 @@ class Instance(models.Model):
     game_storage = models.CharField(max_length=16, choices=STORAGE_CHOICES, default=STORAGE_LOCAL)
     pantheon_id = models.IntegerField(blank=True, null=True)
 
-    @property
-    def backend(self):
-        if self.game_storage == self.STORAGE_PANTHEON:
-            return backends.PantheonBackend()
-        else:
-            return backends.LocalBackend()
-
     def __str__(self):
         return self.name
 
@@ -31,12 +24,10 @@ class Instance(models.Model):
 class Rating(models.Model):
     instance = models.ForeignKey(Instance)
     rating_type = models.CharField(max_length=32, choices=((r, r) for r in rating.ALL_RATINGS))
-
-    def get_rating_processor(self):
-        return rating.ALL_RATINGS[self.rating_type](self)
-
-    def process(self):
-        self.get_rating_processor().process()
+    series_len = models.PositiveIntegerField(blank=True, null=True, help_text='Работает только если рейтинг является серией')
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    weight = models.IntegerField(help_text='Порядок сортировки')
 
     def __str__(self):
         return '{}: {}'.format(self.instance.name, self.rating_type)

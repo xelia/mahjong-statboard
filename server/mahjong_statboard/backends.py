@@ -1,12 +1,6 @@
 import requests
 
 
-class LocalBackend(object):
-    pass
-
-
-class PantheonBackend(object):
-    pass
 
 
 class PantheonClient(object):
