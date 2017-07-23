@@ -11,6 +11,9 @@ from mahjong_statboard import models
 class Command(BaseCommand):
     def handle(self, *args, **options):
         instance, _ = models.Instance.objects.get_or_create(name='tesuji_rating')
+        if instance.game_set.count():
+            print('Games exist, exiting')
+            return
         lines = list(csv.reader(
             requests.get('http://rating.tesuji.ru/games_csv', stream=True).iter_lines(decode_unicode=True),
             delimiter=';'
