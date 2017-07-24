@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
-from rest_framework import routers
+from rest_framework_nested import routers
 
 from mahjong_statboard import views
 
@@ -25,8 +25,13 @@ urlpatterns = [
 ]
 
 router = routers.DefaultRouter()
-router.register(r'games', views.GamesViewSet)
+router.register(r'instances', views.InstancesViewSet)
+
+games_router = routers.NestedSimpleRouter(router, r'instances', lookup='instance')
+games_router.register(r'games', views.GamesViewSet, base_name='games')
+
 urlpatterns += router.urls
+urlpatterns += games_router.urls
 
 if settings.DEBUG:
     import debug_toolbar
