@@ -27,11 +27,12 @@ urlpatterns = [
 router = routers.DefaultRouter()
 router.register(r'instances', views.InstancesViewSet)
 
-games_router = routers.NestedSimpleRouter(router, r'instances', lookup='instance')
-games_router.register(r'games', views.GamesViewSet, base_name='games')
+instances_router = routers.NestedDefaultRouter(router, r'instances', lookup='instance')
+instances_router.register(r'games', views.GamesViewSet, base_name='games')
+instances_router.register(r'players', views.PlayerViewSet, base_name='players')
 
 urlpatterns += router.urls
-urlpatterns += games_router.urls
+urlpatterns += instances_router.urls
 
 if settings.DEBUG:
     import debug_toolbar

@@ -30,3 +30,9 @@ class InstanceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Instance
         fields = '__all__'
+
+
+class PlayerSerializer(serializers.Serializer):
+    player = serializers.ReadOnlyField()
+    stats = serializers.DictField(read_only=True)
+
