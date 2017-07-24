@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import json
+from collections import defaultdict
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -39,6 +41,19 @@ class Stats(models.Model):
     player = models.TextField()
     value = models.TextField()
     game = models.ForeignKey('Game', null=True)
+
+    @classmethod
+    def get_player_stats(cls, instance_id, player=None):
+        stats = cls.objects.filter(instance_id=instance_id)
+        if player:
+            stats = stats.filter(player=player)
+        result = defaultdict(dict)
+        for stat in stats.all():
+            result[stat.player][stat.rating_id] = json.loads(stat.value)
+        result = [{'player': pl, 'stats': st} for pl, st in result.items()]
+        if player:
+            result = result[0] if result else None
+        return result
 
     def __str__(self):
         return '{}, {}, {}, {}: {}'.format(self.instance.name, self.rating, self.player, self.game, self.value)

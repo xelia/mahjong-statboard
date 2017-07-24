@@ -1,3 +1,4 @@
+import json
 from collections import Counter
 
 from mahjong_statboard import models
@@ -13,7 +14,7 @@ class AbstractRating(object):
 
     def save_rating(self, player, value):
         stat, _ = models.Stats.objects.get_or_create(instance=self.rating.instance, rating=self.rating, player=player)
-        stat.value = value
+        stat.value = json.dumps(value)
         stat.save()
 
     def process(self):
