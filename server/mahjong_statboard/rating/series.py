@@ -33,8 +33,8 @@ class AveragePlaceSeries(AbstractRating):
                 best_series_dict[game_result.player] = series
 
         return {
-            player: json.dumps({
+            player: {
                 'best': best_series_dict[player],
                 'current': self.format_series(series_dict[player])
-            }) for player in best_series_dict
+            } for player in best_series_dict
         }

@@ -52,7 +52,7 @@ class Stats(models.Model):
             result[stat.player][stat.rating_id] = json.loads(stat.value)
         result = [{'player': pl, 'stats': st} for pl, st in result.items()]
         if player:
-            result = result[0]
+            result = result[0] if result else None
         return result
 
     def __str__(self):
