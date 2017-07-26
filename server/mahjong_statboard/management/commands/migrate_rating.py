@@ -30,7 +30,8 @@ class Command(BaseCommand):
                     instance=instance,
                     date=datetime.datetime.strptime(date, '%d.%m.%Y'),
                 )
-                for player, score, place, starting_position in zip(players, scores, places, (1,2,3,4)):
+                for player_name, score, place, starting_position in zip(players, scores, places, (1,2,3,4)):
+                    player, _ = models.Player.objects.get_or_create(instance=instance, name=player_name)
                     gr, _ = models.GameResult.objects.get_or_create(
                         game=game,
                         player=player,

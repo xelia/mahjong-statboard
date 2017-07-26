@@ -32,13 +32,20 @@ class Rating(models.Model):
     weight = models.IntegerField(help_text='Порядок сортировки')
 
     def __str__(self):
-        return '{}: {}'.format(self.instance.name, self.rating_type)
+        res = '{}: {}'.format(self.instance.name, self.rating_type)
+        if self.start_date:
+            res += ' start: {}'.format(self.start_date)
+        if self.end_date:
+            res += ' end: {}'.format(self.end_date)
+        if self.series_len:
+            res += ' length: {}'.format(self.series_len)
+        return res
 
 
 class Stats(models.Model):
     instance = models.ForeignKey(Instance)
     rating = models.ForeignKey(Rating)
-    player = models.TextField()
+    player = models.ForeignKey('Player')
     value = models.TextField()
     game = models.ForeignKey('Game', null=True)
 
@@ -59,7 +66,18 @@ class Stats(models.Model):
         return '{}, {}, {}, {}: {}'.format(self.instance.name, self.rating, self.player, self.game, self.value)
 
 
-# Tables for local backend
+class Player(models.Model):
+    instance = models.ForeignKey(Instance)
+    name = models.CharField(max_length=256)
+    full_name = models.TextField(blank=True)
+
+    class Meta:
+        unique_together = ('instance', 'name')
+
+    def __str__(self):
+        return 'Player: {}'.format(self.name)
+
+
 class Game(models.Model):
     instance = models.ForeignKey(Instance)
     date = models.DateField()
@@ -72,7 +90,7 @@ class Game(models.Model):
 
 class GameResult(models.Model):
     game = models.ForeignKey(Game)
-    player = models.TextField()
+    player = models.ForeignKey(Player)
     score = models.IntegerField()
     place = models.SmallIntegerField()
     starting_position = models.SmallIntegerField()
