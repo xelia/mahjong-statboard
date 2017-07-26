@@ -22,8 +22,11 @@ module.exports = {
   */
   build: {
     /*
-    ** Run ESLINT on save
-    */
+     ** Run ESLINT on save
+     */
+    vendor: [
+      'axios',
+    ],
     extend (config, ctx) {
       if (ctx.isClient) {
         // config.module.rules.push({
@@ -34,5 +37,8 @@ module.exports = {
         // })
       }
     }
-  }
+  },
+  plugins: [
+      '~plugins/buefy'
+  ],
 }
