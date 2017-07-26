@@ -5,8 +5,9 @@ from django.db import transaction
 from mahjong_statboard.rating.backends import LocalBackend
 from mahjong_statboard.rating.basic import AveragePlace, AbstractRating
 from mahjong_statboard.rating.series import AveragePlaceSeries
+from mahjong_statboard.rating.tenhou import TenhouRating
 
-ALL_RATINGS = {r.name: r for r in (AveragePlace, AveragePlaceSeries)}
+ALL_RATINGS = {r.name: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating)}
 
 
 @transaction.atomic()

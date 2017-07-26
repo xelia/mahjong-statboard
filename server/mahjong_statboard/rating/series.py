@@ -21,7 +21,7 @@ class AbstractSeries(AbstractRating):
         series_dict = defaultdict(list)
         best_series_dict = {}
 
-        for game_result in self.backend.get_game_results():
+        for game_result in self.get_game_results():
             series = series_dict[game_result.player]
             series.append(game_result)
             if len(series) > self.series_len:

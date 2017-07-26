@@ -24,6 +24,9 @@ class AbstractRating(object):
         for player, value in self.process().items():
             self.save_rating(player, value)
 
+    def get_game_results(self):
+        return self.backend.get_game_results(self.rating.start_date, self.rating.end_date)
+
 
 class AveragePlace(AbstractRating):
     name = 'Average place'

@@ -1,9 +1,13 @@
+import json
+
 from rest_framework import serializers
 
 from mahjong_statboard import models
 
 
 class GameResultSerializer(serializers.ModelSerializer):
+    player = serializers.SlugRelatedField(slug_field='name', read_only=True)
+
     class Meta:
         model = models.GameResult
         fields = ('player', 'score', 'place', 'starting_position')
@@ -25,6 +29,7 @@ class RatingSerializer(serializers.ModelSerializer):
 
 class InstanceSerializer(serializers.HyperlinkedModelSerializer):
     games = serializers.HyperlinkedIdentityField(view_name='games-list', lookup_url_kwarg='instance_pk')
+    players = serializers.HyperlinkedIdentityField(view_name='players-list', lookup_url_kwarg='instance_pk')
     ratings = RatingSerializer(many=True, source='rating_set')
 
     class Meta:
@@ -32,7 +37,21 @@ class InstanceSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-class PlayerSerializer(serializers.Serializer):
-    player = serializers.ReadOnlyField()
-    stats = serializers.DictField(read_only=True)
+class StatsSerializer(serializers.ModelSerializer):
+    value = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.Stats
+        fields = '__all__'
+
+    def get_value(self, obj):
+        return json.loads(obj.value)
+
+
+class PlayerSerializer(serializers.ModelSerializer):
+    stats = StatsSerializer(many=True, read_only=True, source='stats_set')
+
+    class Meta:
+        model = models.Player
+        fields = '__all__'
 
