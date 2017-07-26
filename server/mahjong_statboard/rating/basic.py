@@ -35,7 +35,7 @@ class AveragePlace(AbstractRating):
         result = Counter()
         games = Counter()
 
-        for game_result in self.get_game_results():
+        for game_result in self.backend.get_game_results():
             result[game_result.player] += game_result.place
             games[game_result.player] += 1
 
