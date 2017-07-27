@@ -1,39 +1,59 @@
 <template>
-  <div>
-    <b-table
-      :data="games"
-    >
-      <template scope="props">
-        <b-table-column field="date" label="Дата">
-            {{ props.row.date }}
-        </b-table-column>
-        <b-table-column field="date" label="Игрок1">
-            {{ props.row.results[0].player }}
-        </b-table-column>
-        <b-table-column field="date" label="Счет">
-            {{ props.row.results[0].score }}
-        </b-table-column>
-      </template>
-      <div slot="empty">qwe</div>
-    </b-table>
+  <div class="container">
+    <b-pagination
+      :simple="false"
+      :per-page="30"
+      :total="total_games"
+      :current.sync="page"
+      @change="changePage($event)"
+    ></b-pagination>
+    <daily-games-table :key="date" :date="date" :games="games" v-for="(games, date) in groupedGames" ></daily-games-table>
+    <b-pagination
+      :simple="false"
+      :per-page="30"
+      :total="total_games"
+      :current.sync="page"
+      @change="changePage($event)"
+    ></b-pagination>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import DailyGamesTable from '~/components/DailyGamesTable'
+import {groupBy} from 'lodash'
 
 export default {
-  async asyncData({query}) {
+    async asyncData({query}) {
         let page = query.page
-        let url = `http://localhost:8000/instances/1/games/`
+        let url = `http://localhost:3000/api/instances/1/games/`
         if (page) {url = `${url}?page=${page}`}
         let res = await axios.get(url)
-        return {games: res.data.results}
+        return {
+            games: res.data.results,
+            total_games: res.data.count,
+            page: parseInt(page),
+        }
     },
     data() {
         return {
             games: [],
+            total_games: 0,
+            page: 1
         }
+    },
+    computed: {
+        groupedGames() {
+            return groupBy(this.games, game => game.date)
+        }
+    },
+    methods: {
+        changePage(page) {
+          this.$router.push({path: '/games', query: {page: page}})
+        }
+    },
+    components: {
+      DailyGamesTable
     }
 }
 </script>

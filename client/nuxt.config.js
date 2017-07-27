@@ -35,7 +35,16 @@ module.exports = {
     //   }
     // }
   },
+  modules:[
+        '@nuxtjs/proxy',
+  ],
   plugins: [
     '~plugins/buefy'
-  ]
+  ],
+  css: [
+    { src: 'font-awesome/css/font-awesome.css', lang: 'css' }
+  ],
+  proxy: {
+    '/api/': {target: 'http://localhost:8000/', pathRewrite:{'/api': ''}}
+  }
 }
