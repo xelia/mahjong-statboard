@@ -7,6 +7,6 @@ django-debug-toolbar = "*"
 
 [packages]
 requests = "*"
-django = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
+Django = "*"

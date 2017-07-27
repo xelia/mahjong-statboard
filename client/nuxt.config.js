@@ -22,23 +22,20 @@ module.exports = {
   */
   build: {
     /*
-     ** Run ESLINT on save
-     */
-    vendor: [
-      'axios',
-    ],
-    extend (config, ctx) {
-      if (ctx.isClient) {
-        // config.module.rules.push({
-        //   enforce: 'pre',
-        //   test: /\.(js|vue)$/,
-        //   loader: 'eslint-loader',
-        //   exclude: /(node_modules)/
-        // })
-      }
-    }
+    ** Run ESLINT on save
+    */
+    // extend (config, ctx) {
+    //   if (ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: 'pre',
+    //       test: /\.(js|vue)$/,
+    //       loader: 'eslint-loader',
+    //       exclude: /(node_modules)/
+    //     })
+    //   }
+    // }
   },
   plugins: [
-      '~plugins/buefy'
-  ],
+    '~plugins/buefy'
+  ]
 }

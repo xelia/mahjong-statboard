@@ -151,3 +151,5 @@ typings/
 .yarn-integrity
 
 db.sqlite3
+.idea
+.vscode
