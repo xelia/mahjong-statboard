@@ -25,6 +25,7 @@ class InstancesViewSet(viewsets.ReadOnlyModelViewSet):
 
 class PlayerViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.PlayerSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return models.Player.objects.filter(

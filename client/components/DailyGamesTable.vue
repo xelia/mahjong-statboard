@@ -6,7 +6,7 @@
       :data="games"
       :striped="true"
       :narrowed="true"
-      :mobileCards="false"
+      :mobileCards="true"
     >
       <template scope="props">
         <!--<b-table-column field="date" label="Дата">-->

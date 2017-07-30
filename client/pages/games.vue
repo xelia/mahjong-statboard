@@ -19,16 +19,15 @@
 </template>
 
 <script>
-import axios from 'axios';
 import DailyGamesTable from '~/components/DailyGamesTable'
 import {groupBy} from 'lodash'
 
 export default {
-    async asyncData({query}) {
-        let page = query.page
-        let url = `http://localhost:3000/api/instances/1/games/`
-        if (page) {url = `${url}?page=${page}`}
-        let res = await axios.get(url)
+    async asyncData({app, query}) {
+        let page = query.page || 1
+        let url = `/instances/1/games/?format=json`
+        if (page) {url = `${url}&page=${page}`}
+        let res = await app.$axios.get(url)
         return {
             games: res.data.results,
             total_games: res.data.count,
