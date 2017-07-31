@@ -6,6 +6,7 @@ from mahjong_statboard.rating.basic import AbstractRating
 
 
 class TenhouRating(AbstractRating):
+    id = 'tenhou_rating'
     name = 'Tenhou rating'
     base = [30, 10, -10, -30]
 

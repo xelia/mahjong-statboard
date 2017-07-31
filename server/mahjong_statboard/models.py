@@ -25,14 +25,14 @@ class Instance(models.Model):
 
 class Rating(models.Model):
     instance = models.ForeignKey(Instance)
-    rating_type = models.CharField(max_length=32, choices=((r, r) for r in rating.ALL_RATINGS))
+    rating_type_id = models.CharField(max_length=32, choices=((r.id, r.name) for r in rating.ALL_RATINGS.values()))
     series_len = models.PositiveIntegerField(blank=True, null=True, help_text='Работает только если рейтинг является серией')
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     weight = models.IntegerField(help_text='Порядок сортировки')
 
     def __str__(self):
-        res = '{}: {}'.format(self.instance.name, self.rating_type)
+        res = '{}: {}'.format(self.instance.name, self.rating_type_id)
         if self.start_date:
             res += ' start: {}'.format(self.start_date)
         if self.end_date:
@@ -47,6 +47,7 @@ class Stats(models.Model):
     rating = models.ForeignKey(Rating)
     player = models.ForeignKey('Player')
     value = models.TextField()
+    place = models.IntegerField(null=True, blank=True)
     game = models.ForeignKey('Game', null=True)
 
     @classmethod

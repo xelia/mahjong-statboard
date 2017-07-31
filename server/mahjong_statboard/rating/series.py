@@ -5,7 +5,9 @@ from mahjong_statboard.rating.basic import AbstractRating
 
 
 class AbstractSeries(AbstractRating):
+    id = 'abstract_series'
     name = 'Abstract series'
+    is_series = True
 
     @property
     def series_len(self):
@@ -40,7 +42,11 @@ class AbstractSeries(AbstractRating):
 
 
 class AveragePlaceSeries(AbstractSeries):
-    name = 'Average place/Score sum series'
+    id = "average_place_series"
+    name = 'Серия по среднему месту'
+
+    def _sortkey(self, value):
+        return value['best']['avg_place'], -value['best']['score_sum']
 
     def get_best_series(self, *series_list):
         series_list = filter(None, series_list)

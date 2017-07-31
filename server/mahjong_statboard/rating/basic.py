@@ -6,14 +6,19 @@ from mahjong_statboard.rating.backends import AbstractBackend
 
 
 class AbstractRating(object):
+    id = 'abstract_rating'
     name = 'Abstract rating'
+    is_series = False
 
     def __init__(self, rating: 'models.Rating', backend: AbstractBackend):
         self.rating = rating
         self.backend = backend
 
-    def save_rating(self, player, value):
-        stat, _ = models.Stats.objects.get_or_create(instance=self.rating.instance, rating=self.rating, player=player)
+    def _sortkey(self, value):
+        return value
+
+    def save_rating(self, player, value, place):
+        stat, _ = models.Stats.objects.get_or_create(instance=self.rating.instance, rating=self.rating, player=player, place=place)
         stat.value = json.dumps(value)
         stat.save()
 
@@ -21,15 +26,17 @@ class AbstractRating(object):
         raise NotImplementedError()
 
     def process_and_save(self):
-        for player, value in self.process().items():
-            self.save_rating(player, value)
+        sorted_rating = sorted(self.process().items(), key=lambda a: self._sortkey(a[1]))
+        for place, (player, value) in enumerate(sorted_rating, start=1):
+            self.save_rating(player, value, place)
 
     def get_game_results(self):
         return self.backend.get_game_results(self.rating.start_date, self.rating.end_date)
 
 
 class AveragePlace(AbstractRating):
-    name = 'Average place'
+    id = 'average_place'
+    name = 'Среднее место'
 
     def process(self):
         result = Counter()
