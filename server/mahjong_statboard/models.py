@@ -31,8 +31,12 @@ class Rating(models.Model):
     end_date = models.DateField(blank=True, null=True)
     weight = models.IntegerField(help_text='Порядок сортировки')
 
-    def __str__(self):
-        res = '{}: {}'.format(self.instance.name, self.rating_type_id)
+    def get_rating_type(self):
+        return rating.ALL_RATINGS[self.rating_type_id]
+
+    @property
+    def name(self):
+        res = self.get_rating_type().name
         if self.start_date:
             res += ' start: {}'.format(self.start_date)
         if self.end_date:
@@ -40,6 +44,9 @@ class Rating(models.Model):
         if self.series_len:
             res += ' length: {}'.format(self.series_len)
         return res
+
+    def __str__(self):
+        return '{}: {}'.format(self.instance.name, self.name)
 
 
 class Stats(models.Model):
@@ -74,6 +81,10 @@ class Player(models.Model):
 
     class Meta:
         unique_together = ('instance', 'name')
+
+    @property
+    def stats(self):
+        return {stat.rating_id: stat for stat in self.stats_set}
 
     def __str__(self):
         return 'Player: {}'.format(self.name)

@@ -22,13 +22,12 @@ class GameSerializer(serializers.ModelSerializer):
 
 
 class RatingSerializer(serializers.ModelSerializer):
-    name = serializers.SerializerMethodField()
+    name = serializers.ReadOnlyField()
+    is_series = serializers.BooleanField(source='get_rating_type.is_series')
+
     class Meta:
         model = models.Rating
         fields = '__all__'
-
-    def get_name(self, obj):
-        return str(obj)
 
 
 class InstanceSerializer(serializers.HyperlinkedModelSerializer):
