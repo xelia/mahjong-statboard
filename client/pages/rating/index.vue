@@ -9,10 +9,23 @@
           v-for="rating in instance.ratings"
           :label="rating.name"
           :key="rating.id"
+
+          sortable
         >
           <rating-value
-            :value="{}"
+            :value="props.row.stats[rating.id]"
             :rating="rating"
+          >
+          </rating-value>
+        </b-table-column>
+        <b-table-column
+          label="asdasdsda"
+          :custom-sort="function(){return -1}"
+          sortable
+        >
+          <rating-value
+            :value="props.row.stats[1]"
+            rating=""
           >
           </rating-value>
         </b-table-column>
@@ -39,8 +52,17 @@
           }
       },
       methods:{
-          getPlayerRating(player, rating) {
-              return player.stats.find(stat => {return stat.rating == rating.id})
+          getRatingComparator(rating) {
+              let res = (a, b) => {
+                if(!b.stats[index.id]){
+                  return 1
+                }
+                if(!a.stats[index.id]){
+                  return -1
+                }
+                return a.stats[index.id].place - b.stats[index.id].place
+              }
+              return res
           }
       },
       components: {

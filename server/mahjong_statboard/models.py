@@ -35,6 +35,10 @@ class Rating(models.Model):
         return rating.ALL_RATINGS[self.rating_type_id]
 
     @property
+    def stats(self):
+        return {stat.player_id: stat for stat in self.stats_set.all()}
+
+    @property
     def name(self):
         res = self.get_rating_type().name
         if self.start_date:
@@ -57,19 +61,6 @@ class Stats(models.Model):
     place = models.IntegerField(null=True, blank=True)
     game = models.ForeignKey('Game', null=True)
 
-    @classmethod
-    def get_player_stats(cls, instance_id, player=None):
-        stats = cls.objects.filter(instance_id=instance_id)
-        if player:
-            stats = stats.filter(player=player)
-        result = defaultdict(dict)
-        for stat in stats.all():
-            result[stat.player][stat.rating_id] = json.loads(stat.value)
-        result = [{'player': pl, 'stats': st} for pl, st in result.items()]
-        if player:
-            result = result[0] if result else None
-        return result
-
     def __str__(self):
         return '{}, {}, {}, {}: {}'.format(self.instance.name, self.rating, self.player, self.game, self.value)
 
@@ -84,7 +75,7 @@ class Player(models.Model):
 
     @property
     def stats(self):
-        return {stat.rating_id: stat for stat in self.stats_set}
+        return {stat.rating_id: stat for stat in self.stats_set.all()}
 
     def __str__(self):
         return 'Player: {}'.format(self.name)

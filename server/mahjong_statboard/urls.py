@@ -29,7 +29,9 @@ router.register(r'instances', views.InstancesViewSet)
 
 instances_router = routers.NestedDefaultRouter(router, r'instances', lookup='instance')
 instances_router.register(r'games', views.GamesViewSet, base_name='games')
-instances_router.register(r'players', views.PlayerViewSet, base_name='players')
+instances_router.register(r'players', views.PlayersViewSet, base_name='players')
+instances_router.register(r'ratings', views.RatingsViewSet, base_name='ratings')
+instances_router.register(r'stats', views.StatsViewSet, base_name='stats')
 
 urlpatterns += router.urls
 urlpatterns += instances_router.urls
