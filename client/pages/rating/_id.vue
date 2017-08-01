@@ -38,7 +38,9 @@
               return this.stats.reduce((acc, val) => {acc[val.player] = val; return acc}, {})
           },
           filteredPlayers() {
-              return this.players.filter(player => player.id in this.statsByPlayer)
+              let players = this.players.filter(player => player.id in this.statsByPlayer)
+              players.sort((a,b) => {return this.statsByPlayer[a.id].place - this.statsByPlayer[b.id].place})
+              return players
           }
       },
       components: {

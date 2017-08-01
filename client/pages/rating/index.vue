@@ -6,28 +6,17 @@
           {{ props.row.name }}
         </b-table-column>
         <b-table-column
-          v-for="rating in instance.ratings"
+          v-for="rating in ratings"
           :label="rating.name"
           :key="rating.id"
 
           sortable
         >
-          <rating-value
-            :value="props.row.stats[rating.id]"
-            :rating="rating"
-          >
-          </rating-value>
-        </b-table-column>
-        <b-table-column
-          label="asdasdsda"
-          :custom-sort="function(){return -1}"
-          sortable
-        >
-          <rating-value
-            :value="props.row.stats[1]"
-            rating=""
-          >
-          </rating-value>
+          <!--<rating-value-->
+            <!--:value="props.row.stats[rating.id]"-->
+            <!--:rating="rating"-->
+          <!--&gt;-->
+          <!--</rating-value>-->
         </b-table-column>
       </template>
     </b-table>
@@ -38,16 +27,16 @@
   import RatingValue from "~/components/RatingValue"
   export default {
       async asyncData({app}) {
-          let instance = await app.$axios.get('/instances/1/?format=json')
+          let ratings = await app.$axios.get('/instances/1/ratings/?format=json')
           let players = await app.$axios.get('/instances/1/players/?format=json')
           return {
-              instance: instance.data,
+              ratings: ratings.data,
               players: players.data
           }
       },
       data() {
           return {
-              instance: null,
+              ratings: [],
               players: [],
           }
       },
