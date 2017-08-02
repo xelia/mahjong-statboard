@@ -31,6 +31,9 @@ class Rating(models.Model):
     end_date = models.DateField(blank=True, null=True)
     weight = models.IntegerField(help_text='Порядок сортировки')
 
+    class Meta:
+        ordering = ('weight', )
+
     def get_rating_type(self):
         return rating.ALL_RATINGS[self.rating_type_id]
 

@@ -29,6 +29,7 @@
       async asyncData({app}) {
           let ratings = await app.$axios.get('/instances/1/ratings/?format=json')
           let players = await app.$axios.get('/instances/1/players/?format=json')
+          let stats = await app.$axios.get(`/instances/1/stats/?format=json`)
           return {
               ratings: ratings.data,
               players: players.data

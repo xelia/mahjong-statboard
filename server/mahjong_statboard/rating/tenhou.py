@@ -10,6 +10,9 @@ class TenhouRating(AbstractRating):
     name = 'Tenhou rating'
     base = [30, 10, -10, -30]
 
+    def _sortkey(self, value):
+        return -value
+
     def process(self):
         rating = defaultdict(lambda: 1500)
         games_played = Counter()

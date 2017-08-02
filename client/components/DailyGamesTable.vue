@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="container">
     <nav class="level">
-      <p class="subtitle level-item">{{ date }}</p></nav>
+      <p class="subtitle level-item">{{ date }}</p>
+    </nav>
     <b-table
       :data="games"
       :striped="true"
