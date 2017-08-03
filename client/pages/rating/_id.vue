@@ -10,9 +10,11 @@
           {{ props.row.name }}
         </b-table-column>
         <b-table-column label="Лучшая серия" v-if="rating.is_series">
+          <rating-value :rating="rating" :value="statsByPlayer[props.row.id].value"/>
           <series-details :series="statsByPlayer[props.row.id].value.best"/>
         </b-table-column>
         <b-table-column label="Текущая серия" v-if="rating.is_series">
+          <rating-value :rating="rating" :value="statsByPlayer[props.row.id].value"/>
           <series-details :series="statsByPlayer[props.row.id].value.current"/>
         </b-table-column>
         <b-table-column label="Значение" v-if="!rating.is_series">

@@ -1,13 +1,11 @@
 <template>
   <div class="container">
-    <div class=""
     <b-pagination
       :simple="false"
       :per-page="30"
       :total="total_games"
       :current.sync="page"
       @change="changePage($event)"
-      order="is-centered"
     />
     <daily-games-table :key="date" :date="date" :games="games" v-for="(games, date) in groupedGames" ></daily-games-table>
     <b-pagination
@@ -16,7 +14,6 @@
       :total="total_games"
       :current.sync="page"
       @change="changePage($event)"
-      order="is-centered"
     />
   </div>
 </template>

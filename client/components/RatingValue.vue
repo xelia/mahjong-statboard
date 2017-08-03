@@ -1,22 +1,12 @@
 <template>
-  <div>
-    <span v-for="place in bestSeriesPlaces">{{ place }}</span>
-  </div>
+    <span v-if="value">
+      <span v-if="rating.is_series">{{ value.best.avg_place }} / {{ value.best.score_sum }} </span>
+      <span v-else>{{ value.value }}</span>
+    </span>
 </template>
 
 <script>
   export default {
     props: ['rating', 'value'],
-    computed: {
-      bestSeriesPlaces() {
-        if(!this.value){
-          return []
-        }
-        if(!this.value.value){
-          return []
-        }
-        return this.value.value.best.series
-      }
-    }
   }
 </script>

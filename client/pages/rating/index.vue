@@ -1,6 +1,11 @@
 <template>
   <div class="container">
-    <b-table :data="players">
+    <b-table
+      :data="players"
+      :striped="true"
+      :narrowed="true"
+      :mobileCards="true"
+    >
       <template scope="props">
         <b-table-column label="Имя">
           {{ props.row.name }}
@@ -12,11 +17,11 @@
 
           sortable
         >
-          <!--<rating-value-->
-            <!--:value="props.row.stats[rating.id]"-->
-            <!--:rating="rating"-->
-          <!--&gt;-->
-          <!--</rating-value>-->
+          <rating-value
+            :value="groupedStats[props.row.id][rating.id]"
+            :rating="rating"
+          >
+          </rating-value>
         </b-table-column>
       </template>
     </b-table>
@@ -32,13 +37,27 @@
           let stats = await app.$axios.get(`/instances/1/stats/?format=json`)
           return {
               ratings: ratings.data,
-              players: players.data
+              players: players.data,
+              stats: stats.data
           }
       },
       data() {
           return {
               ratings: [],
               players: [],
+              stats: [],
+          }
+      },
+      computed: {
+          groupedStats() {
+              return this.stats.reduce(
+                  (acc, val) => {
+                      acc[val.player] = acc[val.player] || {};
+                      acc[val.player][val.rating] = val;
+                      return acc
+                  }, {}
+              )
+
           }
       },
       methods:{
