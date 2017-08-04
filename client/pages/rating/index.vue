@@ -1,10 +1,12 @@
 <template>
   <div class="container">
     <b-table
-      :data="players"
+      :data="sortedPlayers"
       :striped="true"
       :narrowed="true"
       :mobileCards="true"
+      :backend-sorting="true"
+      @sort="doSort"
     >
       <template scope="props">
         <b-table-column label="Имя">
@@ -14,11 +16,12 @@
           v-for="rating in ratings"
           :label="rating.name"
           :key="rating.id"
-
+          :field="rating.id.toString()"
           sortable
         >
           <rating-value
-            :value="groupedStats[props.row.id][rating.id]"
+            v-if="groupedStats[props.row.id][rating.id]"
+            :value="groupedStats[props.row.id][rating.id].value"
             :rating="rating"
           >
           </rating-value>
@@ -38,7 +41,9 @@
           return {
               ratings: ratings.data,
               players: players.data,
-              stats: stats.data
+              stats: stats.data,
+              sortField: null,
+              sortDirection: 'asc'
           }
       },
       data() {
@@ -58,20 +63,22 @@
                   }, {}
               )
 
+          },
+          sortedPlayers(){
+              if(!this.sortField){
+                  return this.players
+              }
+              return this.players.sort((a, b) => {
+                  let val = this.groupedStats[a.id][this.sortField].place - this.groupedStats[b.id][this.sortField].place
+                  if(this.sortDirection == 'desc') val *= -1
+                  return val
+              })
           }
       },
       methods:{
-          getRatingComparator(rating) {
-              let res = (a, b) => {
-                if(!b.stats[index.id]){
-                  return 1
-                }
-                if(!a.stats[index.id]){
-                  return -1
-                }
-                return a.stats[index.id].place - b.stats[index.id].place
-              }
-              return res
+          doSort(sortField, sortDirection){
+              this.sortField = sortField
+              this.sortDirection = sortDirection
           }
       },
       components: {
