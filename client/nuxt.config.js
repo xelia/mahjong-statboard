@@ -20,6 +20,7 @@ module.exports = {
   /*
   ** Build configuration
   */
+  mode: 'spa',
   build: {
     /*
     ** Run ESLINT on save

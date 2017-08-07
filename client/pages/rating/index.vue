@@ -20,8 +20,8 @@
           sortable
         >
           <rating-value
-            v-if="groupedStats[props.row.id][rating.id]"
-            :value="groupedStats[props.row.id][rating.id].value"
+            v-if="groupedStats[props.row.id] && groupedStats[props.row.id][rating.id]"
+            :value="rating.is_series?groupedStats[props.row.id][rating.id].value.best:groupedStats[props.row.id][rating.id].value"
             :rating="rating"
           >
           </rating-value>
@@ -65,14 +65,20 @@
 
           },
           sortedPlayers(){
-              if(!this.sortField){
-                  return this.players
-              }
-              return this.players.sort((a, b) => {
+              console.log('qwe')
+              let players = [...this.players]
+              if(this.sortField) {
+                players.sort((a, b) => {
+                  if (!this.groupedStats[a.id] || !this.groupedStats[a.id][this.sortField])
+                    return 1
+                  if(!this.groupedStats[b.id] || !this.groupedStats[b.id][this.sortField])
+                    return -1;
                   let val = this.groupedStats[a.id][this.sortField].place - this.groupedStats[b.id][this.sortField].place
-                  if(this.sortDirection == 'desc') val *= -1
+                  if (this.sortDirection == 'desc') val *= -1
                   return val
-              })
+                })
+              }
+              return players
           }
       },
       methods:{

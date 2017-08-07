@@ -17,6 +17,5 @@
     </section>
   </div>
 </template>
-
 <style>
 </style>
