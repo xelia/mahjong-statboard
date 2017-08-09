@@ -10,7 +10,7 @@ class InstanceAdmin(admin.ModelAdmin):
 
 @admin.register(models.Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('instance', 'rating_type_id', 'series_len', 'start_date', 'end_date', 'weight')
+    list_display = ('instance', 'rating_name', 'rating_type_id', 'series_len', 'start_date', 'end_date', 'weight')
     list_editable = ('weight', )
 
 

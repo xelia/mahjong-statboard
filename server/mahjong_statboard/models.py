@@ -25,6 +25,7 @@ class Instance(models.Model):
 
 class Rating(models.Model):
     instance = models.ForeignKey(Instance)
+    rating_name = models.CharField(max_length=256, blank=True, default='')
     rating_type_id = models.CharField(max_length=32, choices=((r.id, r.name) for r in rating.ALL_RATINGS.values()))
     series_len = models.PositiveIntegerField(blank=True, null=True, help_text='Работает только если рейтинг является серией')
     start_date = models.DateField(blank=True, null=True)
@@ -43,6 +44,8 @@ class Rating(models.Model):
 
     @property
     def name(self):
+        if self.rating_name:
+            return self.rating_name
         res = self.get_rating_type().name
         if self.start_date:
             res += ' start: {}'.format(self.start_date)

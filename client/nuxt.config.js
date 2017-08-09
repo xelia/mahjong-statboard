@@ -20,7 +20,6 @@ module.exports = {
   /*
   ** Build configuration
   */
-  mode: 'spa',
   build: {
     /*
     ** Run ESLINT on save
@@ -36,6 +35,9 @@ module.exports = {
     //   }
     // }
   },
+  css: [
+    { src: '~assets/bulma-vars.sass', lang: 'sass' },
+  ],
   modules:[
     '@nuxtjs/proxy',
     ['@nuxtjs/axios', {baseURL: "http://localhost:3000/api", debug: true}]

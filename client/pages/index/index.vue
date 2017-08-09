@@ -9,8 +9,11 @@
       @sort="doSort"
     >
       <template scope="props">
+        <b-table-column label="Место" width="1">
+          {{ props.index }}
+        </b-table-column>
         <b-table-column label="Имя">
-          {{ props.row.name }}
+          <nuxt-link :to="`/players/${props.row.id}`">{{ props.row.name }}</nuxt-link>
         </b-table-column>
         <b-table-column
           v-for="rating in ratings"
@@ -20,8 +23,8 @@
           sortable
         >
           <rating-value
-            v-if="groupedStats[props.row.id] && groupedStats[props.row.id][rating.id]"
-            :value="rating.is_series?groupedStats[props.row.id][rating.id].value.best:groupedStats[props.row.id][rating.id].value"
+            v-if="props.row.stats && props.row.stats[rating.id]"
+            :value="rating.is_series? props.row.stats[rating.id].value.best : props.row.stats[rating.id].value"
             :rating="rating"
           >
           </rating-value>
@@ -53,27 +56,33 @@
               stats: [],
           }
       },
+      created(){
+        this.doSort(this.ratings[0].id, 'asc')
+      },
       computed: {
-          groupedStats() {
-              return this.stats.reduce(
+          playersWithStats(){
+              let players = [...this.players]
+              let stats = this.stats.reduce(
                   (acc, val) => {
                       acc[val.player] = acc[val.player] || {};
                       acc[val.player][val.rating] = val;
                       return acc
                   }, {}
               )
-
+              for (let player of players){
+                  player['stats'] = stats[player.id]
+              }
+              return players
           },
           sortedPlayers(){
-              console.log('qwe')
-              let players = [...this.players]
+              let players = [...this.playersWithStats]
               if(this.sortField) {
                 players.sort((a, b) => {
-                  if (!this.groupedStats[a.id] || !this.groupedStats[a.id][this.sortField])
+                  if(!a.stats || !a.stats[this.sortField])
                     return 1
-                  if(!this.groupedStats[b.id] || !this.groupedStats[b.id][this.sortField])
+                  if(!b.stats || !b.stats[this.sortField])
                     return -1;
-                  let val = this.groupedStats[a.id][this.sortField].place - this.groupedStats[b.id][this.sortField].place
+                  let val = a.stats[this.sortField].place - b.stats[this.sortField].place
                   if (this.sortDirection == 'desc') val *= -1
                   return val
                 })
