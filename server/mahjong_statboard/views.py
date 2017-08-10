@@ -1,5 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets
+from rest_framework import views, viewsets
+from rest_framework.decorators import list_route
+from rest_framework.response import Response
 
 from mahjong_statboard import models, serializers
 
@@ -68,3 +70,10 @@ class StatsViewSet(viewsets.ReadOnlyModelViewSet):
         return models.Stats.objects.filter(
             rating__instance_id=self.kwargs.get('instance_pk')
         ).all()
+
+
+class CurrentUserView(views.APIView):
+    def get(self, request):
+        print(request.user)
+        return Response(serializers.UserSerializer(request.user).data)
+

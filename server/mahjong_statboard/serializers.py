@@ -64,3 +64,8 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 class ExtendedPlayerSerializer(PlayerSerializer):
     stats = serializers.DictField(child=StatsSerializer())
+
+
+class UserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    is_authenticated = serializers.BooleanField()

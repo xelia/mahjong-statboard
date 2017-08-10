@@ -75,6 +75,7 @@ class Player(models.Model):
     instance = models.ForeignKey(Instance)
     name = models.CharField(max_length=256)
     full_name = models.TextField(blank=True)
+    hidden = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('instance', 'name')

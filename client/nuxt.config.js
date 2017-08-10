@@ -35,9 +35,6 @@ module.exports = {
     //   }
     // }
   },
-  css: [
-    { src: '~assets/bulma-vars.sass', lang: 'sass' },
-  ],
   modules:[
     '@nuxtjs/proxy',
     ['@nuxtjs/axios', {baseURL: "http://localhost:3000/api", debug: true}]
@@ -49,6 +46,8 @@ module.exports = {
     { src: 'font-awesome/css/font-awesome.css', lang: 'css' },
   ],
   proxy: {
-    '/api': {target: 'http://localhost:8000/', pathRewrite:{'/api': ''}}
+    '/api': {target: 'http://localhost:8000/', pathRewrite:{'/api': ''}},
+    '/admin': {target: 'http://localhost:8000/'},
+    '/static': {target: 'http://localhost:8000/'}
   }
 }

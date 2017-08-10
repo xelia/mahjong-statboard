@@ -7,6 +7,7 @@
 </template>
 <script>
   export default {
+    middleware: 'auth',
     async asyncData({app, params}){
       let player = await app.$axios.get(`/instances/1/players/${params.id}/?format=json&stats=true`)
       return {
