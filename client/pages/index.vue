@@ -2,7 +2,7 @@
   <div>
     <navbar :ratings="ratings"></navbar>
     <section class="section">
-      <nuxt-child :key="$route.path"></nuxt-child>
+      <nuxt-child></nuxt-child>
     </section>
   </div>
 </template>
