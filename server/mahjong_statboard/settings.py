@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mahjong_statboard',
     'rest_framework',
     'django_filters',
+    'rest_auth',
 ]
 
 MIDDLEWARE = [
@@ -140,5 +141,11 @@ LOGGING = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
     'PAGE_SIZE': 30
 }
+
+REST_USE_JWT = True
+

@@ -1,6 +1,8 @@
 import json
 from collections import Counter
 
+from django.db import transaction
+
 from mahjong_statboard import models
 from mahjong_statboard.rating.backends import AbstractBackend
 
@@ -27,8 +29,10 @@ class AbstractRating(object):
 
     def process_and_save(self):
         sorted_rating = sorted(self.process().items(), key=lambda a: self._sortkey(a[1]))
-        for place, (player, value) in enumerate(sorted_rating, start=1):
-            self.save_rating(player, value, place)
+        with transaction.atomic():
+            models.Stats.objects.filter(instance=self.rating.instance, rating=self.rating).delete()
+            for place, (player, value) in enumerate(sorted_rating, start=1):
+                self.save_rating(player, value, place)
 
     def get_game_results(self):
         return self.backend.get_game_results(self.rating.start_date, self.rating.end_date)

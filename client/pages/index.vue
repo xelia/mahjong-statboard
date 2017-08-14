@@ -1,12 +1,13 @@
 <template>
   <div>
-    <navbar :ratings="ratings"></navbar>
+    <navbar :ratings="ratings" :user="loggedUser"></navbar>
     <section class="section">
       <nuxt-child></nuxt-child>
     </section>
   </div>
 </template>
 <script>
+  import { mapGetters } from 'vuex'
   import Navbar from '~/components/Navbar'
   export default {
     async asyncData({app}) {
@@ -22,7 +23,11 @@
     },
     components: {
       Navbar,
-    }
+    },
+    computed: mapGetters([
+      'isAuthenticated',
+      'loggedUser'
+    ])
   }
 </script>
 <style lang="scss">

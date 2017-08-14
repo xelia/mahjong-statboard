@@ -37,7 +37,12 @@ module.exports = {
   },
   modules:[
     '@nuxtjs/proxy',
-    ['@nuxtjs/axios', {baseURL: "http://localhost:3000/api", debug: true}]
+    ['@nuxtjs/axios',
+      {
+        baseURL: "http://localhost:3000/api",
+        debug: true,
+      }
+    ]
   ],
   plugins: [
     '~plugins/buefy'
@@ -49,5 +54,8 @@ module.exports = {
     '/api': {target: 'http://localhost:8000/', pathRewrite:{'/api': ''}},
     '/admin': {target: 'http://localhost:8000/'},
     '/static': {target: 'http://localhost:8000/'}
-  }
+  },
+  router: {
+    middleware: 'check-auth'
+  },
 }

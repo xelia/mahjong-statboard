@@ -21,6 +21,10 @@
           </div>
         </div>
       </div>
+      <div class="navbar-end">
+        <nuxt-link to="/auth/login/" v-if="!user" class="navbar-item">Login</nuxt-link>
+        <nuxt-link to="/auth/logout/" v-else class="navbar-item">Logout</nuxt-link>
+      </div>
     </div>
   </nav>
 </template>
@@ -33,7 +37,7 @@
       NuxtLink,
       NuxtChild
     },
-    props: ['ratings'],
+    props: ['ratings', 'user'],
     data() {
       return {
         menuActive: false
