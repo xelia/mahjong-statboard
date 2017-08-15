@@ -1,9 +1,11 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import views, viewsets
 from rest_framework.decorators import list_route
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mahjong_statboard import models, serializers
+from mahjong_statboard.legacy import add_games
 
 
 class InstancesViewSet(viewsets.ReadOnlyModelViewSet):
@@ -23,6 +25,10 @@ class GamesViewSet(viewsets.ReadOnlyModelViewSet):
             'gameresult_set',
             'gameresult_set__player'
         ).all()
+
+    @list_route(methods=['post'], permission_classes=(IsAuthenticated,))
+    def add_games_legacy(self, request, instance_pk):
+        return Response(add_games(request.data['raw_games'], models.Instance.objects.get(pk=instance_pk), request.user))
 
 
 class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
