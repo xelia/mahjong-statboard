@@ -1,7 +1,7 @@
 export const state = () => {
   return {
     user: null,
-    token:null,
+    token: null,
   }
 }
 

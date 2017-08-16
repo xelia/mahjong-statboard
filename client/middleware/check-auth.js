@@ -1,9 +1,9 @@
-import { getUserFromCookie, getUserFromLocalStorage } from '~/utils/auth'
+import { getUserFromCookieServerSide, getUserFromCookieClientSide,  } from '~/utils/auth'
 
 export default function ({ app, isServer, store, req }) {
    // If nuxt generate, pass this middleware
   if (isServer && !req) return
-  const [token, loggedUser] = isServer ? getUserFromCookie(req) : getUserFromLocalStorage()
+  const [token, loggedUser] = isServer ? getUserFromCookieServerSide(req) : getUserFromCookieClientSide()
   store.commit('SET_USER', loggedUser)
-  app.$axios.setToken(token, 'jwt')
+  store.commit('SET_TOKEN', token)
 }
