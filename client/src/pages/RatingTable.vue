@@ -7,13 +7,14 @@
       :mobileCards="true"
       :backend-sorting="true"
       @sort="doSort"
+      :loading="loading"
     >
       <template scope="props">
         <b-table-column label="Место" width="1">
-          {{ props.index }}
+          {{ props.index + 1 }}
         </b-table-column>
         <b-table-column label="Имя">
-          <nuxt-link :to="`/players/${props.row.id}`">{{ props.row.name }}</nuxt-link>
+          <router-link :to="`/player/${props.row.id}`">{{ props.row.name }}</router-link>
         </b-table-column>
         <b-table-column
           v-for="rating in ratings"
@@ -33,30 +34,22 @@
     </b-table>
   </div>
 </template>
-
 <script>
-  import RatingValue from "~/components/RatingValue"
+  import axios from 'axios'
+  import RatingValue from "@/components/RatingValue"
   export default {
-      async asyncData({app}) {
-          let ratings = await app.$axios.get('/instances/1/ratings/?format=json')
-          let players = await app.$axios.get('/instances/1/players/?format=json')
-          let stats = await app.$axios.get(`/instances/1/stats/?format=json`)
-          return {
-              ratings: ratings.data,
-              players: players.data,
-              stats: stats.data,
-              sortField: null,
-              sortDirection: 'asc'
-          }
-      },
       data() {
           return {
               ratings: [],
               players: [],
               stats: [],
+              sortField: null,
+              sortDirection: 'asc',
+              loading: false
           }
       },
-      created(){
+      async created(){
+        await this.fetchData()
         this.doSort(this.ratings[0].id, 'asc')
       },
       computed: {
@@ -83,7 +76,7 @@
                   if(!b.stats || !b.stats[this.sortField])
                     return -1;
                   let val = a.stats[this.sortField].place - b.stats[this.sortField].place
-                  if (this.sortDirection == 'desc') val *= -1
+                  if (this.sortDirection === 'desc') val *= -1
                   return val
                 })
               }
@@ -91,10 +84,20 @@
           }
       },
       methods:{
-          doSort(sortField, sortDirection){
-              this.sortField = sortField
-              this.sortDirection = sortDirection
-          }
+         async fetchData() {
+           this.loading = true
+           let ratings = await axios.get('/api/instances/1/ratings/?format=json')
+           let players = await axios.get('/api/instances/1/players/?format=json')
+           let stats = await axios.get(`/api/instances/1/stats/?format=json`)
+           this.ratings = ratings.data
+           this.players = players.data
+           this.stats = stats.data
+           this.loading = false
+         },
+         doSort(sortField, sortDirection){
+           this.sortField = sortField
+           this.sortDirection = sortDirection
+         }
       },
       components: {
         RatingValue

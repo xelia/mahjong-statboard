@@ -43,7 +43,7 @@ def do_add_games(raw_games, instance, user):
                 dt[2] += 2000
             date = datetime.date(dt[2], dt[1], dt[0])
             players = list(words[1::2])
-            scores = map(int, words[2::2])
+            scores = list(map(int, words[2::2]))
         game = models.Game.objects.create(date=date, posted_by=user, instance=instance)
         places = [len([s for s in scores if s > score]) for score in scores]
 
@@ -68,6 +68,7 @@ def do_add_games(raw_games, instance, user):
         logger = logging.getLogger('add_games')
         logger.info('Games added')
         logger.info(raw_games)
+        models.Rating.objects.filter(instance=instance).update(state=models.Rating.STATE_INQUEUE)
     else:
         res = "Во входных данных обнаружены ошибки. Данные не добавлены. <br>" + res
         raise Exception(res)

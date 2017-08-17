@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
-from collections import defaultdict
 from django.db import models
 from django.contrib.auth import get_user_model
 
 from mahjong_statboard import rating
+from mahjong_statboard.rating.backends import LocalBackend
 
 
 class Instance(models.Model):
@@ -19,11 +18,22 @@ class Instance(models.Model):
     game_storage = models.CharField(max_length=16, choices=STORAGE_CHOICES, default=STORAGE_LOCAL)
     pantheon_id = models.IntegerField(blank=True, null=True)
 
+    def get_backend(self):
+        return LocalBackend(self)
+
     def __str__(self):
         return self.name
 
 
 class Rating(models.Model):
+    STATE_INQUEUE = 'inqueue'
+    STATE_COUNTING = 'counting'
+    STATE_ACTUAL = 'actual'
+    STATE_CHOICES = (
+        (STATE_INQUEUE, 'In queue for counting'),
+        (STATE_COUNTING, 'Counting'),
+        (STATE_ACTUAL, 'Actual')
+    )
     instance = models.ForeignKey(Instance)
     rating_name = models.CharField(max_length=256, blank=True, default='')
     rating_type_id = models.CharField(max_length=32, choices=((r.id, r.name) for r in rating.ALL_RATINGS.values()))
@@ -31,6 +41,7 @@ class Rating(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     weight = models.IntegerField(help_text='Порядок сортировки')
+    state = models.CharField(choices=STATE_CHOICES, max_length=16, default=STATE_INQUEUE)
 
     class Meta:
         ordering = ('weight', )

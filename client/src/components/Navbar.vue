@@ -23,14 +23,14 @@
           </div>
         </div>
         <div class="navbar-end">
-          <router-link to="/auth/login/" v-if="!user" class="navbar-item">Войти</router-link>
+          <router-link to="/auth/login/" v-if="!user.authenticated" class="navbar-item">Войти</router-link>
           <div v-else class="navbar-item has-dropdown is-hoverable">
             <div class="navbar-link">
-              {{ user.username }}
+              {{ user.data.username }}
             </div>
             <div class="navbar-dropdown">
               <router-link to="/service/add-games/" class="navbar-item">Добавить игры</router-link>
-              <router-link to="/auth/logout/" class="navbar-item">Выход</router-link>
+              <a class="navbar-item" @click="logout()">Выход</a>
             </div>
           </div>
         </div>
@@ -39,11 +39,18 @@
   </nav>
 </template>
 <script>
+  import auth from '@/utils/auth'
   export default {
-    props: ['ratings', 'user'],
+    props: ['ratings'],
     data() {
       return {
-        menuActive: false
+        menuActive: false,
+        user: auth.user,
+      }
+    },
+    methods: {
+      logout(){
+        auth.logout()
       }
     }
   }

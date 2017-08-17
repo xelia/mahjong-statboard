@@ -8,4 +8,5 @@ from mahjong_statboard.rating import process_all_ratings
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        process_all_ratings(instance=models.Instance.objects.first())
+        for instance in models.Instance.objects.all():
+            process_all_ratings(instance=instance)

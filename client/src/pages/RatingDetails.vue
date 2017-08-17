@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1 class="title">{{ rating.name }}</h1>
-    <b-table :data="filteredPlayers">
+    <b-table :data="filteredPlayers" :loading="loading">
       <template scope="props">
         <b-table-column label="Место" :width="1">
           {{ statsByPlayer[props.row.id].place }}
@@ -25,25 +25,35 @@
   </div>
 </template>
 <script>
-  import RatingValue from "~/components/RatingValue"
-  import SeriesDetails from "~/components/SeriesDetails"
+  import axios from 'axios'
+  import RatingValue from "@/components/RatingValue"
+  import SeriesDetails from "@/components/SeriesDetails"
   export default {
-      async asyncData({app, params}) {
-          let rating = await app.$axios.get(`/instances/1/ratings/${params.id}/?format=json`)
-          let players = await app.$axios.get('/instances/1/players/?format=json')
-          let stats = await app.$axios.get(`/instances/1/stats/?rating=${params.id}&format=json`)
-          return {
-              rating: rating.data,
-              players: players.data,
-              stats: stats.data,
-          }
-      },
       data() {
           return {
-              rating: null,
+              rating: {},
               players: [],
               stats: [],
+              loading: false,
           }
+      },
+      created(){
+        this.fetchData()
+      },
+      watch:{
+        '$route': 'fetchData'
+      },
+      methods: {
+        async fetchData() {
+          this.loading = true
+          let rating = await axios.get(`/api/instances/1/ratings/${this.$route.params.id}/?format=json`)
+          let players = await axios.get('/api/instances/1/players/?format=json')
+          let stats = await axios.get(`/api/instances/1/stats/?rating=${this.$route.params.id}&format=json`)
+          this.rating = rating.data
+          this.players = players.data
+          this.stats = stats.data
+          this.loading = false
+        }
       },
       computed: {
           statsByPlayer() {

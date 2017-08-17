@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navbar :ratings="ratings"></navbar>
+    <navbar :ratings="ratings" :user="user"></navbar>
     <section class="section">
       <router-view></router-view>
     </section>
@@ -8,11 +8,13 @@
 </template>
 <script>
   import axios from 'axios'
+  import auth from '@/utils/auth'
   import Navbar from '@/components/Navbar'
   export default {
     data() {
       return {
         ratings: [],
+        user: auth.user,
       }
     },
     components: {

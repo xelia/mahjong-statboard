@@ -9,13 +9,13 @@
           <b-input v-model="password" type="password"></b-input>
         </b-field>
         <p v-if="error.non_field_errors" class="has-text-danger">{{ error.non_field_errors[0] }}</p>
-        <button class="button" :class="{'is-loading': loading}" @click="Login()">Login</button>
+        <button class="button" :class="{'is-loading': loading}" @click="login()">Login</button>
       </div>
     </div>
   </div>
 </template>
 <script>
-  import {setToken} from '~/utils/auth'
+  import auth from '@/utils/auth'
   export default {
     middleware: ['anonymous'],
     data() {
@@ -31,13 +31,7 @@
         this.loading = true
         this.error={}
         try {
-          let result = await this.$axios.post('/auth/login/', {
-              username: this.username,
-              password: this.password,
-            },
-          )
-          setToken(result.data.token)
-          this.$router.push('/')
+          await auth.login(this.username, this.password)
         } catch(e){
           this.error = e.response.data
         }

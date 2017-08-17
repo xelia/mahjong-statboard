@@ -24,4 +24,5 @@ class TenhouRating(AbstractRating):
                 change = adj * (self.base[game_result.place - 1] + (atr - rating[game_result.player]) / 40)
                 rating[game_result.player] += change
                 games_played[game_result.player] += 1
+        rating = {p: round(r, 2) for p, r in rating.items()}
         return rating

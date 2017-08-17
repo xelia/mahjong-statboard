@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+  import axios from 'axios'
   export default {
     data() {
       return {
@@ -24,18 +25,12 @@
       async addGames(){
         this.loading = true
         try {
-          let result = await this.$axios.post('/instances/1/games/add_games_legacy/', {
-              raw_games: this.rawGames
-            }, {
-              headers:{'Authorization':`JWT ${this.$store.getters.loggedUserToken}`}
-            }
-          )
+          let result = await axios.post('/api/instances/1/games/add_games_legacy/', {raw_games: this.rawGames})
           this.error = result.data
         } catch(e){
           this.error = e.response.data
         }
         this.loading = false
-
       }
     }
   }
