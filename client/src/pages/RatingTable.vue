@@ -86,9 +86,11 @@
       methods:{
          async fetchData() {
            this.loading = true
-           let ratings = await axios.get('/api/instances/1/ratings/?format=json')
-           let players = await axios.get('/api/instances/1/players/?format=json')
-           let stats = await axios.get(`/api/instances/1/stats/?format=json`)
+           let [ratings, players, stats] = await Promise.all([
+             axios.get('/api/instances/1/ratings/?format=json'),
+             axios.get('/api/instances/1/players/?format=json'),
+             axios.get(`/api/instances/1/stats/?format=json`),
+           ])
            this.ratings = ratings.data
            this.players = players.data
            this.stats = stats.data

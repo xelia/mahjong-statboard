@@ -38,9 +38,11 @@
   import RatingValue from "~/components/RatingValue"
   export default {
       async asyncData({app}) {
-          let ratings = await app.$axios.get('/instances/1/ratings/?format=json')
-          let players = await app.$axios.get('/instances/1/players/?format=json')
-          let stats = await app.$axios.get(`/instances/1/stats/?format=json`)
+          let [ratings, players, stats] = await Promise.all([
+            app.$axios.get('/instances/1/ratings/?format=json'),
+            app.$axios.get('/instances/1/players/?format=json'),
+            app.$axios.get(`/instances/1/stats/?format=json`),
+          ])
           return {
               ratings: ratings.data,
               players: players.data,
@@ -61,6 +63,7 @@
       },
       computed: {
           playersWithStats(){
+            console.log('playersWithStats')
               let players = [...this.players]
               let stats = this.stats.reduce(
                   (acc, val) => {
@@ -75,6 +78,7 @@
               return players
           },
           sortedPlayers(){
+            console.log('sortedPlayers')
               let players = [...this.playersWithStats]
               if(this.sortField) {
                 players.sort((a, b) => {
@@ -87,6 +91,7 @@
                   return val
                 })
               }
+              console.log('sortedPlayers end')
               return players
           }
       },

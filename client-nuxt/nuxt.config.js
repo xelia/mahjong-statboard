@@ -44,6 +44,7 @@ module.exports = {
       }
     ]
   ],
+  mode: 'spa',
   plugins: [
     '~plugins/buefy'
   ],
