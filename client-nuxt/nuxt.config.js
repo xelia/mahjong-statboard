@@ -35,6 +35,7 @@ module.exports = {
     //   }
     // }
   },
+  mode: 'spa',
   modules:[
     '@nuxtjs/proxy',
     ['@nuxtjs/axios',
