@@ -10,3 +10,5 @@ cd ../client
 npm update
 npm run build
 cd ..
+
+sudo supervisorctl restart mahjong_statboard
