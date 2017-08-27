@@ -20,10 +20,6 @@ from rest_framework_nested import routers
 
 from mahjong_statboard import views
 
-urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^auth/', include('rest_auth.urls'))
-]
 
 router = routers.DefaultRouter()
 router.register(r'instances', views.InstancesViewSet)
@@ -34,8 +30,13 @@ instances_router.register(r'players', views.PlayersViewSet, base_name='players')
 instances_router.register(r'ratings', views.RatingsViewSet, base_name='ratings')
 instances_router.register(r'stats', views.StatsViewSet, base_name='stats')
 
-urlpatterns += router.urls
-urlpatterns += instances_router.urls
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/auth/', include('rest_auth.urls')),
+    url(r'^api/', include(router.urls + instances_router.urls)),
+]
+
 
 if settings.DEBUG:
     import debug_toolbar
