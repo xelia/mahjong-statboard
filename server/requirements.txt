@@ -1,8 +1,0 @@
-requests
-Django
-djangorestframework
-drf-nested-routers
-django-filter
-django-rest-auth
-djangorestframework-jwt
-

@@ -1,0 +1,72 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "3919fd22f629c5c14d96b66db750156d84f35311f684f70a7236e7a2116136b2"
+        },
+        "requires": {},
+        "sources": [
+            {
+                "url": "https://pypi.python.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "certifi": {
+            "version": "==2017.7.27.1"
+        },
+        "chardet": {
+            "version": "==3.0.4"
+        },
+        "django": {
+            "version": "==1.11.4"
+        },
+        "django-filter": {
+            "version": "==1.0.4"
+        },
+        "django-rest-auth": {
+            "version": "==0.9.1"
+        },
+        "djangorestframework": {
+            "version": "==3.6.3"
+        },
+        "djangorestframework-jwt": {
+            "version": "==1.11.0"
+        },
+        "drf-nested-routers": {
+            "version": "==0.90.0"
+        },
+        "idna": {
+            "version": "==2.6"
+        },
+        "pyjwt": {
+            "version": "==1.5.2"
+        },
+        "pytz": {
+            "version": "==2017.2"
+        },
+        "requests": {
+            "version": "==2.18.4"
+        },
+        "six": {
+            "version": "==1.10.0"
+        },
+        "urllib3": {
+            "version": "==1.22"
+        }
+    },
+    "develop": {
+        "django": {
+            "version": "==1.11.4"
+        },
+        "django-debug-toolbar": {
+            "version": "==1.8"
+        },
+        "pytz": {
+            "version": "==2017.2"
+        },
+        "sqlparse": {
+            "version": "==0.2.3"
+        }
+    }
+}
