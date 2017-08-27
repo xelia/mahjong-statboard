@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3919fd22f629c5c14d96b66db750156d84f35311f684f70a7236e7a2116136b2"
+            "sha256": "cbfd65b192b91f8c616ccc56cce994e3041328820d3889c05d9f9e15f1c4e3d3"
         },
         "requires": {},
         "sources": [
@@ -28,7 +28,7 @@
             "version": "==0.9.1"
         },
         "djangorestframework": {
-            "version": "==3.6.3"
+            "version": "==3.6.4"
         },
         "djangorestframework-jwt": {
             "version": "==1.11.0"
@@ -36,8 +36,14 @@
         "drf-nested-routers": {
             "version": "==0.90.0"
         },
+        "gunicorn": {
+            "version": "==19.7.1"
+        },
         "idna": {
             "version": "==2.6"
+        },
+        "psycopg2": {
+            "version": "==2.7.3.1"
         },
         "pyjwt": {
             "version": "==1.5.2"
