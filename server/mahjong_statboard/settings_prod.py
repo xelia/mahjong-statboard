@@ -17,6 +17,10 @@ DATABASES = {
 }
 
 
+STATIC_ROOT = "/var/www/mahjong_statboard/django-static/"
+STATIC_URL = '/django-static/'
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
