@@ -17,3 +17,60 @@ DATABASES = {
 }
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(message)s'
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'INFO',
+            'formatter': 'simple',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+        'file': {
+            'level': 'INFO',
+            'formatter': 'simple',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '/var/log/mahjong_statboard/rating.log'
+        },
+        'player_merge_file': {
+            'level': 'INFO',
+            'formatter': 'simple',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '/var/log/mahjong_statboard/player_merge.log'
+        },
+        'add_games_file': {
+            'level': 'INFO',
+            'formatter': 'simple',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '/var/log/mahjong_statboard/add_games.log'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins', 'file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'player_merge': {
+            'handlers': ['player_merge_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'add_games': {
+            'handlers': ['add_games_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
