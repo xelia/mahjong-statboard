@@ -57,6 +57,9 @@ class GamesCount(AbstractRating):
     id = 'games_count'
     name = 'Число игр'
 
+    def _sortkey(self, value):
+        return -value
+
     def process(self):
         result = Counter()
 
@@ -69,6 +72,9 @@ class GamesCount(AbstractRating):
 class AverageScore(AbstractRating):
     id = 'average_score'
     name = 'Средний счет'
+
+    def _sortkey(self, value):
+        return -value
 
     def process(self):
         result = Counter()
@@ -85,6 +91,9 @@ class MaxScore(AbstractRating):
     id = 'max_score'
     name = 'Максимальный счет'
 
+    def _sortkey(self, value):
+        return -value
+
     def process(self):
         result = Counter()
 
@@ -97,6 +106,9 @@ class MaxScore(AbstractRating):
 class ScoreSum(AbstractRating):
     id = 'score_sum'
     name = 'Сумма очков'
+
+    def _sortkey(self, value):
+        return -value
 
     def process(self):
         result = Counter()
