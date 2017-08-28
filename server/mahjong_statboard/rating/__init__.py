@@ -3,11 +3,11 @@ import logging
 from django.db import transaction
 
 from mahjong_statboard import models
-from mahjong_statboard.rating.basic import AveragePlace, AbstractRating
+from mahjong_statboard.rating.basic import AveragePlace, AbstractRating, AverageScore, GamesCount, MaxScore
 from mahjong_statboard.rating.series import AveragePlaceSeries
 from mahjong_statboard.rating.tenhou import TenhouRating
 
-ALL_RATINGS = {r.id: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating)}
+ALL_RATINGS = {r.id: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating, AverageScore, GamesCount, MaxScore)}
 
 
 @transaction.atomic()

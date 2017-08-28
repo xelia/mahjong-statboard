@@ -54,7 +54,41 @@ class AveragePlace(AbstractRating):
 
 
 class GamesCount(AbstractRating):
-    name = 'Games count'
+    id = 'games_count'
+    name = 'Число игр'
 
     def process(self):
         result = Counter()
+
+        for game_result in self.backend.get_game_results():
+            result[game_result.player] += 1
+
+        return result
+
+
+class AverageScore(AbstractRating):
+    id = 'average_score'
+    name = 'Средний счет'
+
+    def process(self):
+        result = Counter()
+        games = Counter()
+
+        for game_result in self.backend.get_game_results():
+            result[game_result.player] += game_result.score
+            games[game_result.player] += 1
+
+        return {player: round(result[player] / games[player]) for player in result}
+
+
+class MaxScore(AbstractRating):
+    id = 'max_score'
+    name = 'Максимальный счет'
+
+    def process(self):
+        result = Counter()
+
+        for game_result in self.backend.get_game_results():
+            result[game_result.player] = max(game_result.score, result[game_result.player])
+
+        return result
