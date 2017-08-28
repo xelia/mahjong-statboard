@@ -3,11 +3,11 @@ import logging
 from django.db import transaction
 
 from mahjong_statboard import models
-from mahjong_statboard.rating.basic import AveragePlace, AbstractRating, AverageScore, GamesCount, MaxScore
+from mahjong_statboard.rating.basic import AveragePlace, AbstractRating, AverageScore, GamesCount, MaxScore, ScoreSum
 from mahjong_statboard.rating.series import AveragePlaceSeries
 from mahjong_statboard.rating.tenhou import TenhouRating
 
-ALL_RATINGS = {r.id: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating, AverageScore, GamesCount, MaxScore)}
+ALL_RATINGS = {r.id: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating, AverageScore, GamesCount, MaxScore, ScoreSum)}
 
 
 @transaction.atomic()
@@ -17,7 +17,7 @@ def process_all_ratings(instance, force=False):
         ratings = ratings.filter(state=models.Rating.STATE_INQUEUE)
     for rating in ratings:
         rating.stats_set.all().delete()
-        logging.debug('Processing rating %s', rating)
+        logging.info('Processing rating %s', rating)
         rating.state = models.Rating.STATE_COUNTING
         rating.save()
         ALL_RATINGS[rating.rating_type_id](rating, instance.get_backend()).process_and_save()

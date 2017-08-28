@@ -92,3 +92,16 @@ class MaxScore(AbstractRating):
             result[game_result.player] = max(game_result.score, result[game_result.player])
 
         return result
+
+
+class ScoreSum(AbstractRating):
+    id = 'max_score'
+    name = 'Сумма очков'
+
+    def process(self):
+        result = Counter()
+
+        for game_result in self.backend.get_game_results():
+            result[game_result.player] += game_result.score - 25000
+
+        return result
