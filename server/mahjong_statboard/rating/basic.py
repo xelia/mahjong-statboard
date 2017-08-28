@@ -95,7 +95,7 @@ class MaxScore(AbstractRating):
 
 
 class ScoreSum(AbstractRating):
-    id = 'max_score'
+    id = 'score_sum'
     name = 'Сумма очков'
 
     def process(self):
