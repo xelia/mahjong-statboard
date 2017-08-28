@@ -40,7 +40,7 @@ class Rating(models.Model):
     series_len = models.PositiveIntegerField(blank=True, null=True, help_text='Работает только если рейтинг является серией')
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
-    weight = models.IntegerField(help_text='Порядок сортировки')
+    weight = models.IntegerField(help_text='Порядок сортировки', default=999)
     state = models.CharField(choices=STATE_CHOICES, max_length=16, default=STATE_INQUEUE)
 
     class Meta:
