@@ -45,7 +45,6 @@ module.exports = {
       }
     ]
   ],
-  mode: 'spa',
   plugins: [
     '~plugins/buefy'
   ],
@@ -53,7 +52,7 @@ module.exports = {
     { src: 'font-awesome/css/font-awesome.css', lang: 'css' },
   ],
   proxy: {
-    '/api': {target: 'http://localhost:8000/', pathRewrite:{'/api': ''}},
+    '/api': {target: 'http://localhost:8000/'},
     '/admin': {target: 'http://localhost:8000/'},
     '/static': {target: 'http://localhost:8000/'}
   },

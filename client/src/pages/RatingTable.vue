@@ -88,7 +88,7 @@
            this.loading = true
            let [ratings, players, stats] = await Promise.all([
              axios.get('/api/instances/1/ratings/?format=json'),
-             axios.get('/api/instances/1/players/?format=json'),
+             axios.get('/api/instances/1/players/?format=json&active=1'),
              axios.get(`/api/instances/1/stats/?format=json`),
            ])
            this.ratings = ratings.data

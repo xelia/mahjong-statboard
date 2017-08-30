@@ -1,4 +1,5 @@
-from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models.aggregates import Count
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter
 from rest_framework import views, viewsets
 from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
@@ -31,9 +32,25 @@ class GamesViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(add_games(request.data['raw_games'], models.Instance.objects.get(pk=instance_pk), request.user))
 
 
+class ProductFilter(FilterSet):
+    active = BooleanFilter(method='active_player_filter')
+
+    class Meta:
+        model = models.Player
+        fields = ['hidden']
+
+    def active_player_filter(self, queryset, name, value):
+        if value:
+            return queryset.annotate(games_count=Count('gameresult')).filter(hidden=False, games_count__gte=10)
+        else:
+            return queryset
+
+
 class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.PlayerSerializer
     pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = ProductFilter
 
     def get_serializer_class(self):
         if self.request.GET.get('stats'):
