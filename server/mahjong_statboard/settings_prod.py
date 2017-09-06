@@ -35,6 +35,10 @@ LOGGING = {
         }
     },
     'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
         'mail_admins': {
             'level': 'INFO',
             'formatter': 'simple',
@@ -76,5 +80,9 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
-    }
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'DEBUG',
+    },
 }
