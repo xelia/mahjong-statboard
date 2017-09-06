@@ -7,6 +7,7 @@ const RatingDetails = () => import('@/pages/RatingDetails.vue')
 const PlayerDetails = () => import('@/pages/PlayerDetails.vue')
 const AddGames = () => import('@/pages/AddGames.vue')
 const Login = () => import('@/pages/auth/Login.vue')
+const MeetingsList = () => import('@/pages/MeetingsList.vue')
 
 Vue.use(Router)
 
@@ -35,6 +36,11 @@ export default new Router({
           path: '/player/:id/',
           name: 'PlayerDetails',
           component: PlayerDetails,
+        },
+        {
+          path: '/meetings/',
+          name: 'MeetingsList',
+          component: MeetingsList,
         },
         {
           path: '/auth/login/',

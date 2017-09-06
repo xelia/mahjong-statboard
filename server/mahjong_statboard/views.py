@@ -1,3 +1,4 @@
+from django.contrib.postgres.aggregates.general import StringAgg
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter
 from rest_framework import views, viewsets
@@ -100,3 +101,16 @@ class CurrentUserView(views.APIView):
         print(request.user)
         return Response(serializers.UserSerializer(request.user).data)
 
+
+class MeetingsViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.MeetingSerializer
+
+    def get_queryset(self):
+        return models.Game.objects.filter(
+            instance_id=self.kwargs['instance_pk']
+        ).values(
+            'date'
+        ).annotate(
+            players=StringAgg('gameresult__player__name', ';', distinct=True),
+            games_count=Count('id', distinct=True),
+        ).order_by('-date')

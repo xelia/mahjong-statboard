@@ -10,6 +10,7 @@ class InstanceSerializer(serializers.HyperlinkedModelSerializer):
     games = serializers.HyperlinkedIdentityField(view_name='games-list', lookup_url_kwarg='instance_pk')
     players = serializers.HyperlinkedIdentityField(view_name='players-list', lookup_url_kwarg='instance_pk')
     ratings = serializers.HyperlinkedIdentityField(view_name='ratings-list', lookup_url_kwarg='instance_pk')
+    meetings = serializers.HyperlinkedIdentityField(view_name='meetings-list', lookup_url_kwarg='instance_pk')
 
     class Meta:
         model = models.Instance
@@ -69,3 +70,16 @@ class ExtendedPlayerSerializer(PlayerSerializer):
 class UserSerializer(serializers.Serializer):
     username = serializers.CharField()
     is_authenticated = serializers.BooleanField()
+
+
+class MeetingSerializer(serializers.Serializer):
+    date = serializers.DateField()
+    players = serializers.SerializerMethodField()
+    games_count = serializers.IntegerField()
+    players_count = serializers.SerializerMethodField()
+
+    def get_players(self, obj):
+        return obj['players'].split(';')
+
+    def get_players_count(self, obj):
+        return len(obj['players'].split(';'))

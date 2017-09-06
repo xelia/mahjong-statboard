@@ -29,6 +29,7 @@ instances_router.register(r'games', views.GamesViewSet, base_name='games')
 instances_router.register(r'players', views.PlayersViewSet, base_name='players')
 instances_router.register(r'ratings', views.RatingsViewSet, base_name='ratings')
 instances_router.register(r'stats', views.StatsViewSet, base_name='stats')
+instances_router.register(r'meetings', views.MeetingsViewSet, base_name='meetings')
 
 
 urlpatterns = [
