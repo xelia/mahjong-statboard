@@ -93,7 +93,7 @@ class Player(models.Model):
 
     @property
     def stats(self):
-        return {stat.rating_id: stat for stat in self.stats_set.all()}
+        return {stat.rating.name: stat for stat in self.stats_set.all()}
 
     def __str__(self):
         return 'Player: {}'.format(self.name)

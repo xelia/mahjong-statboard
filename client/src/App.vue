@@ -15,6 +15,7 @@ export default {
 <style lang="scss">
   @import "~bulma/sass/utilities/initial-variables";
 
+  $primary: #428bca;
   $link: #428bca;
 
   @import "~bulma";
