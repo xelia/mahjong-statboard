@@ -2,7 +2,7 @@ from django.contrib.postgres.aggregates.general import StringAgg
 from django.db.models.aggregates import Count
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter, CharFilter
 from rest_framework import views, viewsets
-from rest_framework.decorators import list_route
+from rest_framework.decorators import list_route, detail_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -68,6 +68,10 @@ class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     filter_backends = (DjangoFilterBackend,)
     filter_class = ProductFilter
+
+    @detail_route()
+    def opponents(self, request, instance_pk, pk):
+        return Response(serializers.OpponentSerializer(self.get_object().opponents, many=True).data)
 
     def get_serializer_class(self):
         if self.request.GET.get('extended'):

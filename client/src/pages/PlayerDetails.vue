@@ -14,12 +14,15 @@
     </section>
     <section>
       <div class="container">
-        <b-tabs v-model="activeTab" type="is-boxed">
+        <b-tabs v-model="activeTab" type="is-boxed" :class="{height: '80px'}">
           <b-tab-item label="Статистика">
             <stats-tab :stats="player.stats"></stats-tab>
           </b-tab-item>
           <b-tab-item label="Игры">
             <games-list-tab :player="player" v-if="activeTab == 1"></games-list-tab>
+          </b-tab-item>
+          <b-tab-item label="Оппоненты">
+            <opponents-tab :player="player" v-if="activeTab == 2"></opponents-tab>
           </b-tab-item>
           <!--<b-tab-item v-for="(stat, rating_id) in player.stats" :label="rating_id" :key="rating_id">-->
             <!--{{ stat }}-->
@@ -33,6 +36,7 @@
   import axios from 'axios'
   import StatsTab from '@/components/profile_tabs/StatsTab'
   let GamesListTab = () => import('@/components/profile_tabs/GamesListTab')
+  let OpponentsTab = () => import('@/components/profile_tabs/OpponentsTab')
   export default {
     data(){
       return {
@@ -54,7 +58,13 @@
     },
     components: {
       StatsTab,
-      GamesListTab
+      GamesListTab,
+      OpponentsTab
     }
   }
 </script>
+<style scoped="">
+  .tab-item {
+    min-height: 300px;
+  }
+</style>

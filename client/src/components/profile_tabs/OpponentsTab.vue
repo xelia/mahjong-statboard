@@ -1,21 +1,22 @@
 <template>
   <b-table
-    :data="games"
+    :data="opponents"
     :narrowed="true"
     :mobileCards="false"
-    :paginated="true"
-    :per-page="10"
     :loading="loading"
   >
     <template scope="props">
-      <b-table-column label="Дата">
-        {{ props.row.date }}
+      <b-table-column label="Игрок">
+        <router-link :to="`/player/${props.row.player.id}`">{{ props.row.player.name }}</router-link>
       </b-table-column>
-      <b-table-column label="Игра">
-        {{ props.row.results.map(r => `${r.player}:${r.score}`).join(', ') }}
+      <b-table-column label="Игр">
+        {{ props.row.wins + props.row.losses }}
       </b-table-column>
-      <b-table-column label="Место">
-        {{ props.row.results.filter(r => r.player == player.name)[0].place }}
+      <b-table-column label="Побед">
+        {{ props.row.wins }}
+      </b-table-column>
+      <b-table-column label="Поражений">
+        {{ props.row.losses }}
       </b-table-column>
     </template>
   </b-table>
@@ -27,7 +28,7 @@
     props: ['player'],
     data() {
       return {
-        games: [],
+        opponents: [],
         loading: false
       }
     },
@@ -40,8 +41,8 @@
     methods: {
       async fetchData() {
         this.loading = true
-        let res = await axios.get(`/api/instances/1/games/?format=json&player=${this.player.name}`)
-        this.games = res.data
+        let res = await axios.get(`/api/instances/1/players/${this.player.id}/opponents/`)
+        this.opponents = res.data
         this.loading = false
       },
     }

@@ -87,3 +87,9 @@ class MeetingSerializer(serializers.Serializer):
 
     def get_players_count(self, obj):
         return len(obj['players'].split(';'))
+
+
+class OpponentSerializer(serializers.Serializer):
+    wins = serializers.IntegerField()
+    losses = serializers.IntegerField()
+    player = PlayerSerializer()

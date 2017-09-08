@@ -21,6 +21,7 @@
               </router-link>
             </div>
           </div>
+          <a class="navbar-item" href="http://tesuji-club.ru">Клуб Тесудзи</a>
         </div>
         <div class="navbar-end">
           <router-link to="/auth/login/" v-if="!user.authenticated" class="navbar-item">Войти</router-link>

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from collections import defaultdict
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -87,6 +88,22 @@ class Player(models.Model):
     name = models.CharField(max_length=256)
     full_name = models.TextField(blank=True)
     hidden = models.BooleanField(default=False)
+
+    @property
+    def opponents(self):
+        result = defaultdict(lambda: {'wins': 0, 'losses': 0, 'player': None})
+        for game in Game.objects.filter(gameresult__player_id=self.id).prefetch_related('gameresult_set', 'gameresult_set__player'):
+            game_results = game.gameresult_set.all()
+            for gr in game_results:
+                if gr.player_id == self.id:
+                    player_place = gr.place
+                    break
+            for gr in game_results:
+                if gr.player_id != self.id:
+                    result[gr.player.id]['wins' if gr.place > player_place else 'losses'] += 1
+                    result[gr.player.id]['player'] = gr.player
+
+        return sorted(result.values(), key=lambda a: a['wins'] + a['losses'], reverse=True)
 
     class Meta:
         unique_together = ('instance', 'name')
