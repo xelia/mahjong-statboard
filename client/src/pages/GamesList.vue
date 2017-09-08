@@ -7,7 +7,12 @@
       :current.sync="page"
       @change="changePage($event)"
     />
-    <daily-games-table :key="date" :date="date" :games="games" v-for="(games, date) in groupedGames" ></daily-games-table>
+    <div class="container" v-for="(games, date) in groupedGames">
+      <nav class="level">
+        <p class="subtitle level-item">{{ date }}</p>
+      </nav>
+      <games-table :games="games"></games-table>
+    </div>
     <b-pagination
       :simple="false"
       :per-page="30"
@@ -20,7 +25,7 @@
 
 <script>
 import axios from 'axios'
-import DailyGamesTable from '@/components/DailyGamesTable'
+import GamesTable from '@/components/GamesTable'
 import {groupBy} from 'lodash'
 
 export default {
@@ -57,7 +62,7 @@ export default {
       }
     },
     components: {
-      DailyGamesTable
+      GamesTable
     }
 }
 </script>

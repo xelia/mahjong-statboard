@@ -4,6 +4,7 @@
       :data="meetings"
       :narrowed="true"
       :mobileCards="true"
+      :loading="loading"
     >
       <template scope="props">
         <b-table-column field="date" label="Дата">
@@ -28,9 +29,10 @@ import axios from 'axios'
 
 export default {
     data() {
-        return {
-            meetings: [],
-        }
+      return {
+        meetings: [],
+        loading: false,
+      }
     },
     created(){
       this.fetchData()
@@ -41,8 +43,10 @@ export default {
     methods: {
       async fetchData() {
         let url = `/api/instances/1/meetings/?format=json`
+        this.loading = true
         let res = await axios.get(url)
         this.meetings = res.data.results
+        this.loading = false
       },
     },
 }

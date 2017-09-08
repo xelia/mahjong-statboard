@@ -1,6 +1,6 @@
 from django.contrib.postgres.aggregates.general import StringAgg
 from django.db.models.aggregates import Count
-from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter, CharFilter
 from rest_framework import views, viewsets
 from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
@@ -15,8 +15,18 @@ class InstancesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.InstanceSerializer
 
 
+class GameFilter(FilterSet):
+    player = CharFilter(name='gameresult__player__name')
+
+    class Meta:
+        model = models.Game
+        fields = ('player', )
+
+
 class GamesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.GameSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = GameFilter
 
     def get_queryset(self):
         return models.Game.objects.filter(
@@ -27,6 +37,12 @@ class GamesViewSet(viewsets.ReadOnlyModelViewSet):
             'gameresult_set',
             'gameresult_set__player'
         ).all()
+
+    @property
+    def paginator(self):
+        if self.request.query_params.get('player'):
+            return None
+        return super().paginator
 
     @list_route(methods=['post'], permission_classes=(IsAuthenticated,))
     def add_games_legacy(self, request, instance_pk):
@@ -54,7 +70,7 @@ class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
     filter_class = ProductFilter
 
     def get_serializer_class(self):
-        if self.request.GET.get('stats'):
+        if self.request.GET.get('extended'):
             return serializers.ExtendedPlayerSerializer
         else:
             return serializers.PlayerSerializer

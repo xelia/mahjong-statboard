@@ -91,10 +91,6 @@ class Player(models.Model):
     class Meta:
         unique_together = ('instance', 'name')
 
-    @property
-    def stats(self):
-        return {stat.rating.name: stat for stat in self.stats_set.all()}
-
     def __str__(self):
         return 'Player: {}'.format(self.name)
 
@@ -115,3 +111,6 @@ class GameResult(models.Model):
     score = models.IntegerField()
     place = models.SmallIntegerField()
     starting_position = models.SmallIntegerField()
+
+    class Meta:
+        ordering = ('starting_position', )

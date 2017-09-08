@@ -25,7 +25,7 @@
         >
           <rating-value
             v-if="props.row.stats && props.row.stats[rating.id]"
-            :value="rating.is_series? props.row.stats[rating.id].value.best : props.row.stats[rating.id].value"
+            :value="props.row.stats[rating.id].value"
             :rating="rating"
           >
           </rating-value>

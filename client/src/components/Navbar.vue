@@ -29,6 +29,7 @@
               {{ user.data.username }}
             </div>
             <div class="navbar-dropdown">
+              <router-link to="/meetings/" class="navbar-item">Список встреч</router-link>
               <router-link to="/service/add-games/" class="navbar-item">Добавить игры</router-link>
               <a class="navbar-item" @click="logout()">Выход</a>
             </div>

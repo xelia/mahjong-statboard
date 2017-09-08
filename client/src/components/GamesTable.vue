@@ -1,8 +1,4 @@
 <template>
-  <div class="container">
-    <nav class="level">
-      <p class="subtitle level-item">{{ date }}</p>
-    </nav>
     <b-table
       :data="games"
       :striped="true"
@@ -10,9 +6,9 @@
       :mobileCards="true"
     >
       <template scope="props">
-        <!--<b-table-column field="date" label="Дата">-->
-            <!--{{ props.row.date }}-->
-        <!--</b-table-column>-->
+        <b-table-column :visible="withDates" field="date" label="Дата">
+            {{ props.row.date }}
+        </b-table-column>
         <b-table-column field="date" label="Игрок1">
             {{ props.row.results[0].player }}
         </b-table-column>
@@ -40,12 +36,14 @@
       </template>
       <div slot="empty">qwe</div>
     </b-table>
-  </div>
 </template>
 
 <script>
 export default {
-  props: ['games', 'date']
+  props: {
+    games: Array,
+    withDates: {type: Boolean, default: false}
+  }
 }
 </script>
 

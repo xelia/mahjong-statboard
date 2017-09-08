@@ -7,14 +7,14 @@
           {{ statsByPlayer[props.row.id].place }}
         </b-table-column>
         <b-table-column label="Игрок">
-          {{ props.row.name }}
+          <router-link :to="`/player/${props.row.id}`">{{ props.row.name }}</router-link>
         </b-table-column>
         <b-table-column label="Лучшая серия" :visible="rating.is_series">
-          <rating-value :rating="rating" :value="statsByPlayer[props.row.id].value.best"/>
+          <rating-value :rating="rating" :value="statsByPlayer[props.row.id].value"/>
           <series-details :series="statsByPlayer[props.row.id].value.best"/>
         </b-table-column>
         <b-table-column label="Текущая серия" :visible="rating.is_series">
-          <rating-value :rating="rating" :value="statsByPlayer[props.row.id].value.current"/>
+          <rating-value :rating="rating" :value="statsByPlayer[props.row.id].value" series="current"/>
           <series-details :series="statsByPlayer[props.row.id].value.current"/>
         </b-table-column>
         <b-table-column label="Значение" :visible="!rating.is_series">

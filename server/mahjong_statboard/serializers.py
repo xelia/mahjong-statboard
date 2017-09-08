@@ -53,6 +53,10 @@ class RatingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class StatsWithRatingSerializer(StatsSerializer):
+    rating = RatingSerializer()
+
+
 class ExtendedRatingSerializer(RatingSerializer):
     stats = serializers.DictField(child=StatsSerializer())
 
@@ -64,7 +68,7 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 
 class ExtendedPlayerSerializer(PlayerSerializer):
-    stats = serializers.DictField(child=StatsSerializer())
+    stats = StatsWithRatingSerializer(source='stats_set', many=True)
 
 
 class UserSerializer(serializers.Serializer):
