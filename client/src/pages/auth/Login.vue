@@ -2,14 +2,16 @@
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-half">
-        <b-field label="Username">
-          <b-input v-model="username" :message="error.username" :type="error.username?'is-danger':''"></b-input>
-        </b-field>
-        <b-field label="Password" :message="error.password" :type="error.password?'is-danger':''">
-          <b-input v-model="password" type="password"></b-input>
-        </b-field>
-        <p v-if="error.non_field_errors" class="has-text-danger">{{ error.non_field_errors[0] }}</p>
-        <button class="button" :class="{'is-loading': loading}" @click="login()">Login</button>
+        <form>
+          <b-field label="Username">
+            <b-input v-model="username" :message="error.username" :type="error.username?'is-danger':''"></b-input>
+          </b-field>
+          <b-field label="Password" :message="error.password" :type="error.password?'is-danger':''">
+            <b-input v-model="password" type="password"></b-input>
+          </b-field>
+          <p v-if="error.non_field_errors" class="has-text-danger">{{ error.non_field_errors[0] }}</p>
+          <button class="button" :class="{'is-loading': loading}" @click="login()">Login</button>
+        </form>
       </div>
     </div>
   </div>
