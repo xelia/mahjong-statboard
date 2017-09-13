@@ -50,6 +50,9 @@
         user: auth.user,
       }
     },
+    watch:{
+      '$route': function(){this.menuActive = false}
+    },
     methods: {
       logout(){
         auth.logout()
