@@ -118,6 +118,9 @@ class Game(models.Model):
     addition_time = models.DateTimeField(auto_now_add=True)
     posted_by = models.ForeignKey(get_user_model(), null=True)
 
+    class Meta:
+        ordering = ('-date', '-addition_time',)
+
     def __str__(self):
         return 'Game date: {}'.format(self.date)
 

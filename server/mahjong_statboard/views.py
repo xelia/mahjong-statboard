@@ -1,5 +1,7 @@
 from django.contrib.postgres.aggregates.general import StringAgg
 from django.db.models.aggregates import Count
+from django.http.response import HttpResponse
+from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter, CharFilter
 from rest_framework import views, viewsets
 from rest_framework.decorators import list_route, detail_route
@@ -16,7 +18,7 @@ class InstancesViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class GameFilter(FilterSet):
-    player = CharFilter(name='gameresult__player__name')
+    player = CharFilter(name='gameresult__player__name', label='Player')
 
     class Meta:
         model = models.Game
@@ -134,3 +136,16 @@ class MeetingsViewSet(viewsets.ModelViewSet):
             players=StringAgg('gameresult__player__name', ';', distinct=True),
             games_count=Count('id', distinct=True),
         ).order_by('-date')
+
+
+class GamesListCsv(View):
+    def get(self, request, instance_id):
+        games = models.Game.objects.filter(instance_id=instance_id).prefetch_related('gameresult_set', 'gameresult_set__player')
+        result = ''
+        for game in games:
+            line = [game.date.strftime('%d.%m.%Y')]
+            for game_result in game.gameresult_set.all():
+                line.append(game_result.player.name)
+                line.append(str(game_result.score))
+            result += ';'.join(line) + '\n'
+        return HttpResponse(result, content_type='text/csv')
