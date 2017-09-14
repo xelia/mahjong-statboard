@@ -8,13 +8,14 @@ from mahjong_statboard import models
 
 class InstanceSerializer(serializers.HyperlinkedModelSerializer):
     games = serializers.HyperlinkedIdentityField(view_name='games-list', lookup_url_kwarg='instance_pk')
+    games_csv = serializers.HyperlinkedIdentityField(view_name='games-csv', lookup_url_kwarg='instance_pk')
     players = serializers.HyperlinkedIdentityField(view_name='players-list', lookup_url_kwarg='instance_pk')
     ratings = serializers.HyperlinkedIdentityField(view_name='ratings-list', lookup_url_kwarg='instance_pk')
     meetings = serializers.HyperlinkedIdentityField(view_name='meetings-list', lookup_url_kwarg='instance_pk')
 
     class Meta:
         model = models.Instance
-        fields = '__all__'
+        exclude = ('pantheon_id', )
 
 
 class GameResultSerializer(serializers.ModelSerializer):

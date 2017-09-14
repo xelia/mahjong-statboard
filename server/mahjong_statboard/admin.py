@@ -12,9 +12,11 @@ class InstanceAdmin(admin.ModelAdmin):
 class RatingAdmin(admin.ModelAdmin):
     list_display = ('instance', 'rating_name', 'rating_type_id', 'series_len', 'start_date', 'end_date', 'weight', 'state')
     list_editable = ('weight', 'state')
+    list_filter = ('instance',)
 
 
 @admin.register(models.Stats)
 class StatsAdmin(admin.ModelAdmin):
     list_filter = ('rating', )
     list_display = ('instance', 'rating', 'player', 'value', 'game', 'place')
+    readonly_fields = list_display

@@ -3,7 +3,7 @@ from django.db.models.aggregates import Count
 from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter, CharFilter
-from rest_framework import views, viewsets
+from rest_framework import views, viewsets, mixins
 from rest_framework.decorators import list_route, detail_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -124,7 +124,7 @@ class CurrentUserView(views.APIView):
         return Response(serializers.UserSerializer(request.user).data)
 
 
-class MeetingsViewSet(viewsets.ModelViewSet):
+class MeetingsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.MeetingSerializer
 
     def get_queryset(self):
@@ -139,8 +139,8 @@ class MeetingsViewSet(viewsets.ModelViewSet):
 
 
 class GamesListCsv(View):
-    def get(self, request, instance_id):
-        games = models.Game.objects.filter(instance_id=instance_id).prefetch_related('gameresult_set', 'gameresult_set__player')
+    def get(self, request, instance_pk):
+        games = models.Game.objects.filter(instance_id=instance_pk).prefetch_related('gameresult_set', 'gameresult_set__player')
         result = ''
         for game in games:
             line = [game.date.strftime('%d.%m.%Y')]
