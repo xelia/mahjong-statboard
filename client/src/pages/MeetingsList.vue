@@ -42,7 +42,7 @@ export default {
     },
     methods: {
       async fetchData() {
-        let url = `/api/instances/1/meetings/?format=json`
+        let url = `/api/instances/${this.$store.state.instance.id}/meetings/?format=json`
         this.loading = true
         let res = await axios.get(url)
         this.meetings = res.data.results

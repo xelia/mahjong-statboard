@@ -50,7 +50,7 @@ export default {
     methods: {
       async fetchData() {
         let page = this.$route.query.page || 1
-        let url = `/api/instances/1/games/?format=json`
+        let url = `/api/instances/${this.$store.state.instance.id}/games/?format=json`
         if (page) {url = `${url}&page=${page}`}
         let res = await axios.get(url)
         this.games = res.data.results

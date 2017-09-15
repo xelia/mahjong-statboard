@@ -41,7 +41,7 @@
     methods: {
       async fetchData() {
         this.loading = true
-        let res = await axios.get(`/api/instances/1/players/${this.player.id}/opponents/`)
+        let res = await axios.get(`/api/instances/${this.$store.state.instance.id}/players/${this.player.id}/opponents/`)
         this.opponents = res.data
         this.loading = false
       },

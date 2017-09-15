@@ -52,7 +52,7 @@
     },
     methods: {
       async fetchData(){
-        let player = await axios.get(`/api/instances/1/players/${this.$route.params.id}/?format=json&extended=true`)
+        let player = await axios.get(`/api/instances/${this.$store.state.instance.id}/players/${this.$route.params.id}/?format=json&extended=true`)
         this.player = player.data
       }
     },

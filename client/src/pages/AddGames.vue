@@ -25,7 +25,7 @@
       async addGames(){
         this.loading = true
         try {
-          let result = await axios.post('/api/instances/1/games/add_games_legacy/', {raw_games: this.rawGames})
+          let result = await axios.post(`/api/instances/${this.$store.state.instance.id}/games/add_games_legacy/`, {raw_games: this.rawGames})
           this.error = result.data
         } catch(e){
           this.error = e.response.data

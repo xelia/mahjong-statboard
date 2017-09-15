@@ -46,9 +46,9 @@
       methods: {
         async fetchData() {
           this.loading = true
-          let rating = await axios.get(`/api/instances/1/ratings/${this.$route.params.id}/?format=json`)
-          let players = await axios.get('/api/instances/1/players/?format=json')
-          let stats = await axios.get(`/api/instances/1/stats/?rating=${this.$route.params.id}&format=json`)
+          let rating = await axios.get(`/api/instances/${this.$store.state.instance.id}/ratings/${this.$route.params.id}/?format=json`)
+          let players = await axios.get(`/api/instances/${this.$store.state.instance.id}/players/?format=json`)
+          let stats = await axios.get(`/api/instances/${this.$store.state.instance.id}/stats/?rating=${this.$route.params.id}&format=json`)
           this.rating = rating.data
           this.players = players.data
           this.stats = stats.data

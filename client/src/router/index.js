@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from '@/pages/Layout.vue'
+import store from '@/store'
 const GamesList = () => import('@/pages/GamesList.vue')
 const RatingTable = () => import('@/pages/RatingTable.vue')
 const RatingDetails = () => import('@/pages/RatingDetails.vue')
@@ -11,7 +12,7 @@ const MeetingsList = () => import('@/pages/MeetingsList.vue')
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
@@ -54,5 +55,13 @@ export default new Router({
         }
       ]
     },
-  ]
+  ],
 })
+
+router.beforeEach(async (to, from, next) => {
+  console.log('qwe')
+  await store.dispatch('loadInstance', window.location.hostname)
+  next()
+})
+
+export default router

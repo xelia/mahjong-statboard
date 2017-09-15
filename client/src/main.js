@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import auth from './utils/auth'
 import router from './router'
+import store from './store'
 import Buefy from 'buefy'
 
 Vue.config.productionTip = false
@@ -14,5 +15,6 @@ auth.init()
 new Vue({
   el: '#app',
   router,
+  store,
   render: h => h(App)
 })

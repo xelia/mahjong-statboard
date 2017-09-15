@@ -25,7 +25,7 @@
     },
     methods:{
       async fetchData() {
-        let ratings = await axios.get(`/api/instances/1/ratings/?format=json`)
+        let ratings = await axios.get(`/api/instances/${this.$store.state.instance.id}/ratings/?format=json`)
         this.ratings = ratings.data
       }
     }

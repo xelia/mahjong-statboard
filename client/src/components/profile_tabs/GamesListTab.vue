@@ -40,7 +40,7 @@
     methods: {
       async fetchData() {
         this.loading = true
-        let res = await axios.get(`/api/instances/1/games/?format=json&player=${this.player.name}`)
+        let res = await axios.get(`/api/instances/${this.$store.state.instance.id}/games/?format=json&player=${this.player.name}`)
         this.games = res.data
         this.loading = false
       },

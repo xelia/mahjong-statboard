@@ -21,7 +21,8 @@
               </router-link>
             </div>
           </div>
-          <a class="navbar-item" href="http://tesuji-club.ru">Клуб Тесудзи</a>
+          <a v-if="$store.state.instance.id == 1" class="navbar-item" href="http://tesuji-club.ru">Клуб Тесудзи</a>
+          <!--TODO: сделать нормально-->
         </div>
         <div class="navbar-end">
           <router-link to="/auth/login/" v-if="!user.authenticated" class="navbar-item">Войти</router-link>
