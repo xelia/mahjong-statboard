@@ -21,7 +21,7 @@ class Command(BaseCommand):
                 # return
             print('Fetching games')
             lines = list(csv.reader(
-                requests.get('http://rating.tesuji.ru/games_csv2', stream=True).iter_lines(decode_unicode=True),
+                requests.get('http://old-rating.tesuji.ru/games_csv2', stream=True).iter_lines(decode_unicode=True),
                 delimiter=';'
             ))
             for line in lines[::-1]:

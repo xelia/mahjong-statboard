@@ -4,7 +4,7 @@ from .secret_key import SECRET_KEY
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['rating.tesuji.ru', 'new-rating.tesuji.ru']
+ALLOWED_HOSTS = ['*']
 
 DATABASES = {
     'default': {
