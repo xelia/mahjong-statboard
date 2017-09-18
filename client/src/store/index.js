@@ -19,14 +19,8 @@ const store = new Vuex.Store({
   },
   actions: {
     async loadInstance({commit}, hostname){
-      let instance = null
-      //TODO: сделать нормально
-      if(['rating.tesuji.ru', 'newrating.tesuji.ru', 'localhost'].includes(hostname)) {
-        instance = await axios.get('/api/instances/1/')
-      }else {
-        instance = await axios.get('/api/instances/2/')
-      }
-      commit('setInstance', instance.data)
+      let instance = await axios.get(`/api/instances/?domain=${hostname}`)
+      commit('setInstance', instance.data.results[0])
     }
   },
   strict: debug,

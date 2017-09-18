@@ -13,10 +13,11 @@ class InstanceSerializer(serializers.HyperlinkedModelSerializer):
     players = serializers.HyperlinkedIdentityField(view_name='players-list', lookup_url_kwarg='instance_pk')
     ratings = serializers.HyperlinkedIdentityField(view_name='ratings-list', lookup_url_kwarg='instance_pk')
     meetings = serializers.HyperlinkedIdentityField(view_name='meetings-list', lookup_url_kwarg='instance_pk')
+    # admins = serializers.SlugRelatedField(many=True, read_only=True, slug_field='username')
 
     class Meta:
         model = models.Instance
-        exclude = ('pantheon_id', )
+        exclude = ('pantheon_id', 'admins',)
 
 
 class GameResultSerializer(serializers.ModelSerializer):

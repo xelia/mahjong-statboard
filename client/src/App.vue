@@ -6,7 +6,12 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  metaInfo() {
+     return {
+       title: (this.$store.state.instance && this.$store.state.instance.title) ? this.$store.state.instance.title: 'Рейтинг'
+     }
+  }
 }
 </script>
 <style>

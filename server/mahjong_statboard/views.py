@@ -12,9 +12,19 @@ from mahjong_statboard import models, serializers
 from mahjong_statboard.legacy import add_games
 
 
+class InstanceFilter(FilterSet):
+    domain = CharFilter(name='domains__name', label='Domain')
+
+    class Meta:
+        model = models.Instance
+        fields = ('domain', )
+
+
 class InstancesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Instance.objects.all()
     serializer_class = serializers.InstanceSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_class = InstanceFilter
 
 
 class GameFilter(FilterSet):

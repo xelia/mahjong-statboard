@@ -3,8 +3,19 @@ from django.contrib import admin
 from . import models
 
 
+class InstanceDomainInline(admin.TabularInline):
+    model = models.InstanceDomain
+    extra = 0
+
+
 @admin.register(models.Instance)
 class InstanceAdmin(admin.ModelAdmin):
+    inlines = (InstanceDomainInline, )
+    list_display = ('name', 'domains')
+
+    def domains(self, obj):
+        return ', '.join(d.name for d in obj.domains.all())
+
     def has_module_permission(self, request):
         return request.user.is_superuser or not request.user.is_anonymous and request.user.instance_set.count()
 

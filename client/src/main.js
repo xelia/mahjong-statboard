@@ -1,9 +1,12 @@
 import Vue from 'vue'
+import Meta from 'vue-meta'
 import App from './App'
 import auth from './utils/auth'
 import router from './router'
 import store from './store'
 import Buefy from 'buefy'
+
+Vue.use(Meta)
 
 Vue.config.productionTip = false
 

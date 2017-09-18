@@ -16,6 +16,7 @@ class Instance(models.Model):
     )
     name = models.TextField()
     description = models.TextField(blank=True)
+    title = models.TextField(blank=True)
     game_storage = models.CharField(max_length=16, choices=STORAGE_CHOICES, default=STORAGE_LOCAL)
     pantheon_id = models.IntegerField(blank=True, null=True)
     admins = models.ManyToManyField(get_user_model())
@@ -25,6 +26,11 @@ class Instance(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class InstanceDomain(models.Model):
+    instance = models.ForeignKey(Instance, related_name='domains')
+    name = models.CharField(max_length=256, unique=True)
 
 
 class Rating(models.Model):
