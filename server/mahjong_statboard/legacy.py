@@ -67,6 +67,7 @@ def do_add_games(raw_games, instance, user):
         res = "Данные добавлены. <br>" + res
         logger = logging.getLogger('add_games')
         logger.info('Games added')
+        logger.info('Instance: {}'.format(instance.name))
         logger.info(raw_games)
         models.Rating.objects.filter(instance=instance).update(state=models.Rating.STATE_INQUEUE)
     else:
