@@ -18,6 +18,7 @@ class Instance(models.Model):
     description = models.TextField(blank=True)
     game_storage = models.CharField(max_length=16, choices=STORAGE_CHOICES, default=STORAGE_LOCAL)
     pantheon_id = models.IntegerField(blank=True, null=True)
+    admins = models.ManyToManyField(get_user_model())
 
     def get_backend(self):
         return LocalBackend(self)
