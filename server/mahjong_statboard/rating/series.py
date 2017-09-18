@@ -55,6 +55,6 @@ class AveragePlaceSeries(AbstractSeries):
     def format_series(self, series):
         return {
             'avg_place': round(sum(result.place for result in series) / len(series), 3),
-            'score_sum': sum(result.score for result in series),
+            'score_sum': sum(result.score - 25000 for result in series),
             'series': [result.place for result in series]
         }
