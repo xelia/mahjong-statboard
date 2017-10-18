@@ -53,7 +53,7 @@ class Command(BaseCommand):
                 print(players, scores)
 
             print('Fetching players')
-            r = requests.get('http://rating.tesuji.ru/players_csv', stream=True)
+            r = requests.get('http://old-rating.tesuji.ru/players_csv', stream=True)
             r.encoding = 'UTF-8'
             lines = list(csv.reader(
                 r.iter_lines(decode_unicode=True),

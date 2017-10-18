@@ -136,6 +136,7 @@ class CurrentUserView(views.APIView):
 
 class MeetingsViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     serializer_class = serializers.MeetingSerializer
+    pagination_class = None
 
     def get_queryset(self):
         return models.Game.objects.filter(

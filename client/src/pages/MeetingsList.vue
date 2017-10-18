@@ -5,6 +5,8 @@
       :narrowed="true"
       :mobileCards="true"
       :loading="loading"
+      :paginated="true"
+      :per-page="30"
     >
       <template scope="props">
         <b-table-column field="date" label="Дата">
@@ -45,7 +47,7 @@ export default {
         let url = `/api/instances/${this.$store.state.instance.id}/meetings/?format=json`
         this.loading = true
         let res = await axios.get(url)
-        this.meetings = res.data.results
+        this.meetings = res.data
         this.loading = false
       },
     },
