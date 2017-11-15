@@ -8,7 +8,7 @@
       :paginated="true"
       :per-page="30"
     >
-      <template scope="props">
+      <template slot-scope="props">
         <b-table-column field="date" label="Дата">
           <span style="white-space: nowrap;">{{ props.row.date }}</span>
         </b-table-column>

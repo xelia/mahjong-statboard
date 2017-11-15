@@ -4,7 +4,7 @@
     :narrowed="true"
     :mobileCards="false"
   >
-    <template scope="props">
+    <template slot-scope="props">
       <b-table-column label="Рейтинг">
         <router-link :to="`/rating/${props.row.rating.id}`">{{ props.row.rating.name }}</router-link>
       </b-table-column>

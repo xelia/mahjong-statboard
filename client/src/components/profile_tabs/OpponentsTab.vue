@@ -5,7 +5,7 @@
     :mobileCards="false"
     :loading="loading"
   >
-    <template scope="props">
+    <template slot-scope="props">
       <b-table-column label="Игрок">
         <router-link :to="`/player/${props.row.player.id}`">{{ props.row.player.name }}</router-link>
       </b-table-column>

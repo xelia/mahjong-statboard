@@ -9,7 +9,7 @@
       @sort="doSort"
       :loading="loading"
     >
-      <template scope="props">
+      <template slot-scope="props">
         <b-table-column label="Место" width="1">
           {{ props.index + 1 }}
         </b-table-column>

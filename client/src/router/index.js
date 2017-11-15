@@ -59,7 +59,6 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  console.log('qwe')
   await store.dispatch('loadInstance', window.location.hostname)
   next()
 })

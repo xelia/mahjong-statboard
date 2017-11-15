@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">{{ rating.name }}</h1>
     <b-table :data="filteredPlayers" :loading="loading">
-      <template scope="props">
+      <template slot-scope="props">
         <b-table-column label="Место" :width="1">
           {{ statsByPlayer[props.row.id].place }}
         </b-table-column>

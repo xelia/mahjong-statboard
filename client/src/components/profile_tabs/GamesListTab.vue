@@ -7,7 +7,7 @@
     :per-page="10"
     :loading="loading"
   >
-    <template scope="props">
+    <template slot-scope="props">
       <b-table-column label="Дата">
         {{ props.row.date }}
       </b-table-column>

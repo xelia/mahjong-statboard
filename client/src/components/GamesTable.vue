@@ -5,7 +5,7 @@
       :narrowed="true"
       :mobileCards="true"
     >
-      <template scope="props">
+      <template slot-scope="props">
         <b-table-column :visible="withDates" field="date" label="Дата">
             {{ props.row.date }}
         </b-table-column>
