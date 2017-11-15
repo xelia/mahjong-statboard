@@ -35,7 +35,7 @@ class AbstractRating(object):
                 self.save_rating(player, value, place)
 
     def get_game_results(self):
-        return self.backend.get_game_results(self.rating.start_date, self.rating.end_date)
+        return self.backend.get_game_results(self.rating.start_date, self.rating.end_date, self.rating.days_number)
 
 
 class AveragePlace(AbstractRating):

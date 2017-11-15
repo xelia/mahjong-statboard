@@ -48,6 +48,7 @@ class Rating(models.Model):
     series_len = models.PositiveIntegerField(blank=True, null=True, help_text='Работает только если рейтинг является серией')
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
+    days_number = models.PositiveIntegerField(blank=True, null=True, help_text='Брать игры за последние N дней')
     weight = models.IntegerField(help_text='Порядок сортировки', default=999)
     state = models.CharField(choices=STATE_CHOICES, max_length=16, default=STATE_INQUEUE)
 
@@ -124,6 +125,11 @@ class Game(models.Model):
     date = models.DateField()
     addition_time = models.DateTimeField(auto_now_add=True)
     posted_by = models.ForeignKey(get_user_model(), null=True)
+
+    def recount_places(self):
+        for place, game_result in enumerate(self.gameresult_set.order_by('-score', 'starting_position').all()):
+            game_result.place = place + 1
+            game_result.save()
 
     class Meta:
         ordering = ('-date', '-addition_time',)

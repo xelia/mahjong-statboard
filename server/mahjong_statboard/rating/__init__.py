@@ -5,9 +5,9 @@ from django.db import transaction
 from mahjong_statboard import models
 from mahjong_statboard.rating.basic import AveragePlace, AbstractRating, AverageScore, GamesCount, MaxScore, ScoreSum
 from mahjong_statboard.rating.series import AveragePlaceSeries
-from mahjong_statboard.rating.tenhou import TenhouRating
+from mahjong_statboard.rating.tenhou import TenhouRating, TenhouRatingNoAdj
 
-ALL_RATINGS = {r.id: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating, AverageScore, GamesCount, MaxScore, ScoreSum)}
+ALL_RATINGS = {r.id: r for r in (AveragePlace, AveragePlaceSeries, TenhouRating, TenhouRatingNoAdj, AverageScore, GamesCount, MaxScore, ScoreSum)}
 
 
 @transaction.atomic()
