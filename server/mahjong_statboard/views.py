@@ -1,14 +1,15 @@
 from django.contrib.postgres.aggregates.general import StringAgg
+from django.db import transaction
 from django.db.models.aggregates import Count
 from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend, FilterSet, BooleanFilter, CharFilter
-from rest_framework import views, viewsets, mixins
+from rest_framework import views, viewsets, mixins, generics, status
 from rest_framework.decorators import list_route, detail_route
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mahjong_statboard import models, serializers
+from mahjong_statboard.auth import IsInstanceAdmin
 from mahjong_statboard.legacy import add_games
 
 
@@ -56,7 +57,7 @@ class GamesViewSet(viewsets.ReadOnlyModelViewSet):
             return None
         return super().paginator
 
-    @list_route(methods=['post'], permission_classes=(IsAuthenticated,))
+    @list_route(methods=['post'], permission_classes=(IsInstanceAdmin,))
     def add_games_legacy(self, request, instance_pk):
         return Response(add_games(request.data['raw_games'], models.Instance.objects.get(pk=instance_pk), request.user))
 
@@ -97,6 +98,25 @@ class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
         ).prefetch_related(
             'stats_set',
         ).all()
+
+
+class PlayerMergeView(generics.GenericAPIView):
+    serializer_class = serializers.PlayerMergeSerializer
+    permission_classes = (IsInstanceAdmin, )
+
+    def get_queryset(self):
+        return None
+
+    def get_serializer_context(self):
+        return {'instance_pk': self.kwargs.get('instance_pk')}
+
+    @transaction.atomic()
+    def post(self, request, instance_pk):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        counter = serializer.validated_data['main_player'].merge(serializer.validated_data['player_to_delete']),
+        models.Rating.objects.filter(instance_id=instance_pk).update(state=models.Rating.STATE_INQUEUE)
+        return Response(counter, status=status.HTTP_200_OK)
 
 
 class RatingsViewSet(viewsets.ReadOnlyModelViewSet):

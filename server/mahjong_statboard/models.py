@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from collections import defaultdict
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -118,6 +119,18 @@ class Player(models.Model):
 
     def __str__(self):
         return 'Player: {}'.format(self.name)
+
+    def merge(self, duplicate_player):
+        logger = logging.getLogger('player_merge')
+        logger.info(
+            'Player merge. Main player: {}, Duplicate player: {}'.format(self.name, duplicate_player.name))
+        counter = 0
+        for game_result in GameResult.objects.filter(player=duplicate_player).all():
+            logger.info('Game id: {} changing player {} to {}'.format(game_result.game_id, duplicate_player.name, self.name))
+            game_result.player = self
+            game_result.save()
+            counter += 1
+        return counter
 
 
 class Game(models.Model):

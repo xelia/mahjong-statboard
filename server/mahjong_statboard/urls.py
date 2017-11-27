@@ -36,7 +36,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/auth/', include('rest_auth.urls')),
     url(r'^api/', include(router.urls + instances_router.urls)),
-    url(r'^api/instances/(?P<instance_pk>[0-9]+)/games_csv/', views.GamesListCsv.as_view(), name='games-csv')
+    url(r'^api/instances/(?P<instance_pk>[0-9]+)/games_csv/', views.GamesListCsv.as_view(), name='games-csv'),
+    url(r'^api/instances/(?P<instance_pk>[0-9]+)/player-merge/', views.PlayerMergeView.as_view(), name='players-merge'),
 ]
 
 

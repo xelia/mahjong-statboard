@@ -1,7 +1,6 @@
 import json
 
 from rest_framework import serializers
-from rest_framework_nested.relations import NestedHyperlinkedRelatedField
 
 from mahjong_statboard import models
 
@@ -72,6 +71,31 @@ class PlayerSerializer(serializers.ModelSerializer):
 
 class ExtendedPlayerSerializer(PlayerSerializer):
     stats = StatsWithRatingSerializer(source='stats_set', many=True)
+
+
+class PlayerNameRelatedField(serializers.SlugRelatedField):
+    def __init__(self, **kwargs):
+        kwargs['slug_field'] = kwargs.get('slug_field', 'name')
+        super().__init__(**kwargs)
+
+    def get_queryset(self):
+        return models.Player.objects.filter(instance_id=self.context.get('instance_pk'))
+
+
+class PlayerMergeSerializer(serializers.Serializer):
+    player_to_delete = PlayerNameRelatedField()
+    main_player = PlayerNameRelatedField()
+
+    def validate(self, data):
+        if data['player_to_delete'] == data['main_player']:
+            raise serializers.ValidationError("Players must be different")
+        if models.Game.objects.filter(
+            gameresult__player=data['main_player']
+        ).filter(
+            gameresult__player=data['player_to_delete']
+        ).count():
+            raise serializers.ValidationError('Cannot merge players with shared games')
+        return data
 
 
 class UserSerializer(serializers.Serializer):
