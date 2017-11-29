@@ -66,23 +66,20 @@ LOGGING = {
     },
     'loggers': {
         'django.request': {
-            'handlers': ['mail_admins', 'file'],
+            'handlers': ['file'],
             'level': 'ERROR',
-            'propagate': True,
         },
         'player_merge': {
             'handlers': ['player_merge_file'],
             'level': 'INFO',
-            'propagate': True,
         },
         'add_games': {
             'handlers': ['add_games_file'],
             'level': 'INFO',
-            'propagate': True,
         },
     },
     'root': {
-        'handlers': ['console'],
-        'level': 'DEBUG',
+        'handlers': ['file'],
+        'level': 'INFO',
     },
 }

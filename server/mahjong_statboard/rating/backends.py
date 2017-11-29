@@ -19,7 +19,8 @@ class LocalBackend(AbstractBackend):
             'game__date',
             'game__addition_time'
         ).select_related(
-            'player'
+            'player',
+            'game'
         )
         if start_date:
             result = result.filter(game__date__gte=start_date)

@@ -10,9 +10,7 @@ class TenhouRating(AbstractRating):
     name = 'Tenhou rating'
     base = [30, 10, -10, -30]
     use_adjustement = True
-
-    def _sortkey(self, value):
-        return -value
+    reverse_sort = True
 
     def process(self):
         rating = defaultdict(lambda: 1500)

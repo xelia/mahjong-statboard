@@ -9,6 +9,7 @@ const PlayerDetails = () => import('@/pages/PlayerDetails.vue')
 const AddGames = () => import('@/pages/AddGames.vue')
 const Login = () => import('@/pages/auth/Login.vue')
 const MeetingsList = () => import('@/pages/MeetingsList.vue')
+const PlayerMerge = () => import('@/pages/PlayerMerge.vue')
 
 Vue.use(Router)
 
@@ -52,7 +53,12 @@ const router = new Router({
           path: '/service/add-games/',
           name: 'AddGames',
           component: AddGames,
-        }
+        },
+        {
+          path: '/service/player-merge/',
+          name: 'PlayerMerge',
+          component: PlayerMerge,
+        },
       ]
     },
   ],

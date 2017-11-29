@@ -62,7 +62,7 @@ class GamesViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(add_games(request.data['raw_games'], models.Instance.objects.get(pk=instance_pk), request.user))
 
 
-class ProductFilter(FilterSet):
+class PlayerFilter(FilterSet):
     active = BooleanFilter(method='active_player_filter')
 
     class Meta:
@@ -71,7 +71,7 @@ class ProductFilter(FilterSet):
 
     def active_player_filter(self, queryset, name, value):
         if value:
-            return queryset.annotate(games_count=Count('gameresult')).filter(hidden=False, games_count__gte=10)
+            return queryset.filter(hidden=False, games_count__gte=10)
         else:
             return queryset
 
@@ -80,7 +80,7 @@ class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.PlayerSerializer
     pagination_class = None
     filter_backends = (DjangoFilterBackend,)
-    filter_class = ProductFilter
+    filter_class = PlayerFilter
 
     @detail_route()
     def opponents(self, request, instance_pk, pk):
@@ -95,6 +95,8 @@ class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         return models.Player.objects.filter(
             instance_id=self.kwargs.get('instance_pk')
+        ).annotate(
+            games_count=Count('gameresult')
         ).prefetch_related(
             'stats_set',
         ).all()
@@ -114,7 +116,7 @@ class PlayerMergeView(generics.GenericAPIView):
     def post(self, request, instance_pk):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        counter = serializer.validated_data['main_player'].merge(serializer.validated_data['player_to_delete']),
+        counter = serializer.validated_data['main_player'].merge(serializer.validated_data['player_to_delete'])
         models.Rating.objects.filter(instance_id=instance_pk).update(state=models.Rating.STATE_INQUEUE)
         return Response(counter, status=status.HTTP_200_OK)
 

@@ -1,5 +1,6 @@
+import datetime
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 
 from django.db import transaction
 
@@ -11,6 +12,7 @@ class AbstractRating(object):
     id = 'abstract_rating'
     name = 'Abstract rating'
     is_series = False
+    reverse_sort = False
 
     def __init__(self, rating: 'models.Rating', backend: AbstractBackend):
         self.rating = rating
@@ -28,7 +30,7 @@ class AbstractRating(object):
         raise NotImplementedError()
 
     def process_and_save(self):
-        sorted_rating = sorted(self.process().items(), key=lambda a: self._sortkey(a[1]))
+        sorted_rating = sorted(self.process().items(), key=lambda a: self._sortkey(a[1]), reverse=self.reverse_sort)
         with transaction.atomic():
             models.Stats.objects.filter(instance=self.rating.instance, rating=self.rating).delete()
             for place, (player, value) in enumerate(sorted_rating, start=1):
@@ -50,15 +52,13 @@ class AveragePlace(AbstractRating):
             result[game_result.player] += game_result.place
             games[game_result.player] += 1
 
-        return {player: round(result[player] / games[player], 3) for player in result}
+        return {player: round(result[player] / games[player], 3) for player in result if games[player] >= 10}
 
 
 class GamesCount(AbstractRating):
     id = 'games_count'
     name = 'Число игр'
-
-    def _sortkey(self, value):
-        return -value
+    reverse_sort = True
 
     def process(self):
         result = Counter()
@@ -72,9 +72,7 @@ class GamesCount(AbstractRating):
 class AverageScore(AbstractRating):
     id = 'average_score'
     name = 'Средний счет'
-
-    def _sortkey(self, value):
-        return -value
+    reverse_sort = True
 
     def process(self):
         result = Counter()
@@ -84,15 +82,13 @@ class AverageScore(AbstractRating):
             result[game_result.player] += game_result.score
             games[game_result.player] += 1
 
-        return {player: round(result[player] / games[player]) for player in result}
+        return {player: round(result[player] / games[player]) for player in result if games[player] >= 10}
 
 
 class MaxScore(AbstractRating):
     id = 'max_score'
     name = 'Максимальный счет'
-
-    def _sortkey(self, value):
-        return -value
+    reverse_sort = True
 
     def process(self):
         result = Counter()
@@ -106,9 +102,7 @@ class MaxScore(AbstractRating):
 class ScoreSum(AbstractRating):
     id = 'score_sum'
     name = 'Сумма очков'
-
-    def _sortkey(self, value):
-        return -value
+    reverse_sort = True
 
     def process(self):
         result = Counter()
@@ -116,4 +110,19 @@ class ScoreSum(AbstractRating):
         for game_result in self.get_game_results():
             result[game_result.player] += game_result.score - 25000
 
+        return result
+
+
+class LastGameDate(AbstractRating):
+    id = 'last_game_date'
+    name = 'Дата последней игры'
+    reverse_sort = True
+
+    def process(self):
+        result = defaultdict(lambda: datetime.date.min)
+
+        for game_result in self.get_game_results():
+            result[game_result.player] = max(game_result.game.date, result[game_result.player])
+
+        result = {key: value.strftime('%Y.%m.%d') for key, value in result.items()}
         return result

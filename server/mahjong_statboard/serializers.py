@@ -64,6 +64,8 @@ class ExtendedRatingSerializer(RatingSerializer):
 
 
 class PlayerSerializer(serializers.ModelSerializer):
+    games_count = serializers.IntegerField(required=False)
+
     class Meta:
         model = models.Player
         fields = '__all__'
