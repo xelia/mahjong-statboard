@@ -2,11 +2,18 @@ matrix:
   include:
     - language: python
       python: "3.6"
+      before_install:
+        - cd server
+        - pip install pipenv
+      install:
+        - pipenv install
 
     - language: nodejs
       node_js:
         - latest
       before_install:
         - cd client
+      install:
+        - npm install
       script:
         - npm run build
