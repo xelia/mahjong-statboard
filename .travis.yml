@@ -1,0 +1,12 @@
+matrix:
+  include:
+    - language: python
+      python: "3.6"
+
+    - language: nodejs
+      node_js:
+        - latest
+      before_install:
+        - cd client
+      script:
+        - npm run build
