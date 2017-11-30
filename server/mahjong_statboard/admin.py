@@ -109,6 +109,11 @@ class PlayerAdmin(admin.ModelAdmin):
             return request.user.is_superuser or request.user in obj.instance.admins.all()
         return True
 
+    def has_delete_permission(self, request, obj=None):
+        if obj:
+            return request.user.is_superuser or request.user in obj.instance.admins.all()
+        return True
+
     def get_queryset(self, request):
         if request.user.is_superuser:
             qs = models.Player.objects.all()
@@ -148,7 +153,7 @@ class GameResultInline(admin.TabularInline):
 
     def has_change_permission(self, request, obj=None):
         if obj:
-            return request.user.is_superuser or request.user in obj.instance.admins.all()
+            return request.user.is_superuser  # or request.user in obj.instance.admins.all()
         return True
 
     def has_add_permission(self, request):
@@ -172,7 +177,7 @@ class GamesAdmin(admin.ModelAdmin):
         return ' '.join('{}:{}'.format(gr.player.name, gr.score) for gr in obj.gameresult_set.all())
 
     def has_module_permission(self, request):
-        return request.user.is_superuser or not request.user.is_anonymous and request.user.instance_set.count()
+        return request.user.is_superuser  # or not request.user.is_anonymous and request.user.instance_set.count()
 
     def has_change_permission(self, request, obj=None):
         if obj:
