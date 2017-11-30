@@ -100,6 +100,7 @@ class StatsAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     list_display = ('name', 'full_name', 'instance', 'hidden', )
     readonly_fields = ('instance',)
+    search_fields = ('name', )
 
     def has_module_permission(self, request):
         return request.user.is_superuser or not request.user.is_anonymous and request.user.instance_set.count()
