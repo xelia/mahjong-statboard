@@ -30,7 +30,7 @@ class Instance(models.Model):
 
 
 class InstanceDomain(models.Model):
-    instance = models.ForeignKey(Instance, related_name='domains', on_delete=models.PROTECT)
+    instance = models.ForeignKey(Instance, related_name='domains', on_delete=models.CASCADE)
     name = models.CharField(max_length=256, unique=True)
 
 
@@ -81,12 +81,12 @@ class Rating(models.Model):
 
 
 class Stats(models.Model):
-    instance = models.ForeignKey(Instance, on_delete=models.PROTECT)
-    rating = models.ForeignKey(Rating, on_delete=models.PROTECT)
-    player = models.ForeignKey('Player', on_delete=models.PROTECT)
+    instance = models.ForeignKey(Instance, on_delete=models.CASCADE)
+    rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
+    player = models.ForeignKey('Player', on_delete=models.CASCADE)
     value = models.TextField()
     place = models.IntegerField(null=True, blank=True)
-    game = models.ForeignKey('Game', null=True, on_delete=models.PROTECT)
+    game = models.ForeignKey('Game', null=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return '{}, {}, {}, {}: {}'.format(self.instance.name, self.rating, self.player, self.game, self.value)
@@ -152,7 +152,7 @@ class Game(models.Model):
 
 
 class GameResult(models.Model):
-    game = models.ForeignKey(Game, on_delete=models.PROTECT)
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
     player = models.ForeignKey(Player, on_delete=models.PROTECT)
     score = models.IntegerField()
     place = models.SmallIntegerField()
