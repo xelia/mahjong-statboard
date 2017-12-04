@@ -30,7 +30,7 @@ class Instance(models.Model):
 
 
 class InstanceDomain(models.Model):
-    instance = models.ForeignKey(Instance, related_name='domains')
+    instance = models.ForeignKey(Instance, related_name='domains', on_delete=models.PROTECT)
     name = models.CharField(max_length=256, unique=True)
 
 
@@ -43,7 +43,7 @@ class Rating(models.Model):
         (STATE_COUNTING, 'Counting'),
         (STATE_ACTUAL, 'Actual')
     )
-    instance = models.ForeignKey(Instance)
+    instance = models.ForeignKey(Instance, on_delete=models.PROTECT)
     rating_name = models.CharField(max_length=256, blank=True, default='')
     rating_type_id = models.CharField(max_length=32, choices=((r.id, r.name) for r in rating.ALL_RATINGS.values()))
     series_len = models.PositiveIntegerField(blank=True, null=True, help_text='Работает только если рейтинг является серией')
@@ -81,19 +81,19 @@ class Rating(models.Model):
 
 
 class Stats(models.Model):
-    instance = models.ForeignKey(Instance)
-    rating = models.ForeignKey(Rating)
-    player = models.ForeignKey('Player')
+    instance = models.ForeignKey(Instance, on_delete=models.PROTECT)
+    rating = models.ForeignKey(Rating, on_delete=models.PROTECT)
+    player = models.ForeignKey('Player', on_delete=models.PROTECT)
     value = models.TextField()
     place = models.IntegerField(null=True, blank=True)
-    game = models.ForeignKey('Game', null=True)
+    game = models.ForeignKey('Game', null=True, on_delete=models.PROTECT)
 
     def __str__(self):
         return '{}, {}, {}, {}: {}'.format(self.instance.name, self.rating, self.player, self.game, self.value)
 
 
 class Player(models.Model):
-    instance = models.ForeignKey(Instance)
+    instance = models.ForeignKey(Instance, on_delete=models.PROTECT)
     name = models.CharField(max_length=256)
     full_name = models.TextField(blank=True)
     hidden = models.BooleanField(default=False)
@@ -134,10 +134,10 @@ class Player(models.Model):
 
 
 class Game(models.Model):
-    instance = models.ForeignKey(Instance)
+    instance = models.ForeignKey(Instance, on_delete=models.PROTECT)
     date = models.DateField()
     addition_time = models.DateTimeField(auto_now_add=True)
-    posted_by = models.ForeignKey(get_user_model(), null=True)
+    posted_by = models.ForeignKey(get_user_model(), null=True, on_delete=models.PROTECT)
 
     def recount_places(self):
         for place, game_result in enumerate(self.gameresult_set.order_by('-score', 'starting_position').all()):
@@ -152,8 +152,8 @@ class Game(models.Model):
 
 
 class GameResult(models.Model):
-    game = models.ForeignKey(Game)
-    player = models.ForeignKey(Player)
+    game = models.ForeignKey(Game, on_delete=models.PROTECT)
+    player = models.ForeignKey(Player, on_delete=models.PROTECT)
     score = models.IntegerField()
     place = models.SmallIntegerField()
     starting_position = models.SmallIntegerField()
