@@ -40,8 +40,9 @@ class InstanceAdmin(admin.ModelAdmin):
 
 @admin.register(models.Rating)
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('instance', 'rating_name', 'rating_type_id', 'series_len', 'start_date', 'end_date', 'weight', 'state')
-    list_editable = ('weight', 'state')
+    list_display = ('instance', 'rating_name', 'rating_type_id', 'series_len', 'start_date', 'end_date', 'weight', 'archived', 'last_recount', 'state')
+    list_editable = ('weight', 'state', 'archived')
+    readonly_fields = ('last_recount', )
     list_filter = (('instance', admin.RelatedOnlyFieldListFilter),)
 
     def get_form(self, request, obj=None, **kwargs):

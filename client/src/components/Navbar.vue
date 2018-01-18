@@ -16,7 +16,11 @@
               Рейтинг
             </router-link>
             <div class="navbar-dropdown">
-              <router-link v-for="rating in ratings" class="navbar-item" :to="`/rating/${rating.id}`" :key="rating.id">
+              <router-link v-for="rating in liveRatings" class="navbar-item" :to="`/rating/${rating.id}`" :key="rating.id">
+                {{ rating.name }}
+              </router-link>
+              <div class="navbar-divider"></div>
+              <router-link v-for="rating in archivedRatings" class="navbar-item" :to="`/rating/${rating.id}`" :key="rating.id">
                 {{ rating.name }}
               </router-link>
             </div>
@@ -55,6 +59,14 @@
     },
     watch:{
       '$route': function(){this.menuActive = false}
+    },
+    computed: {
+      liveRatings(){
+        return this.ratings.filter(r => !r.archived)
+      },
+      archivedRatings(){
+        return this.ratings.filter(r => r.archived)
+      }
     },
     methods: {
       logout(){

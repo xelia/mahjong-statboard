@@ -52,9 +52,11 @@ class Rating(models.Model):
     days_number = models.PositiveIntegerField(blank=True, null=True, help_text='Брать игры за последние N дней')
     weight = models.IntegerField(help_text='Порядок сортировки', default=999)
     state = models.CharField(choices=STATE_CHOICES, max_length=16, default=STATE_INQUEUE)
+    archived = models.BooleanField(default=False)
+    last_recount = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ('weight', )
+        ordering = ('archived', 'weight', )
 
     def get_rating_type(self):
         return rating.ALL_RATINGS[self.rating_type_id]

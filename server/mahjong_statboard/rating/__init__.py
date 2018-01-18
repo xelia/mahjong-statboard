@@ -1,6 +1,7 @@
 import logging
 
 from django.db import transaction
+from django.utils import timezone
 
 from mahjong_statboard import models
 from mahjong_statboard.rating.basic import AveragePlace, AbstractRating, AverageScore, GamesCount, MaxScore, ScoreSum, LastGameDate
@@ -22,7 +23,7 @@ ALL_RATINGS = {r.id: r for r in (
 
 @transaction.atomic()
 def process_all_ratings(instance, force=False):
-    ratings = instance.rating_set.all()
+    ratings = instance.rating_set.filter(archived=False).all()
     if not force:
         ratings = ratings.filter(state=models.Rating.STATE_INQUEUE)
     for rating in ratings:
@@ -32,4 +33,5 @@ def process_all_ratings(instance, force=False):
         rating.save()
         ALL_RATINGS[rating.rating_type_id](rating, instance.get_backend()).process_and_save()
         rating.state = models.Rating.STATE_ACTUAL
+        rating.last_recount = timezone.now()
         rating.save()

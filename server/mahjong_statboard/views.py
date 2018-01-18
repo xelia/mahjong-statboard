@@ -123,6 +123,8 @@ class PlayerMergeView(generics.GenericAPIView):
 
 class RatingsViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('archived', )
 
     def get_serializer_class(self):
         if self.request.GET.get('stats'):

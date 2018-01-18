@@ -29,9 +29,5 @@
         this.ratings = ratings.data
       }
     }
-//    computed: mapGetters([
-//      'isAuthenticated',
-//      'loggedUser'
-//    ])
   }
 </script>
