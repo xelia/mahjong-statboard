@@ -56,5 +56,7 @@ class AveragePlaceSeries(AbstractSeries):
         return {
             'avg_place': round(sum(result.place for result in series) / len(series), 3),
             'score_sum': sum(result.score - 25000 for result in series),
-            'series': [result.place for result in series]
+            'series': [result.place for result in series],
+            'start_date': series[0].game.date.isoformat(),
+            'end_date': series[-1].game.date.isoformat(),
         }
