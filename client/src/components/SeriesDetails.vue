@@ -1,5 +1,5 @@
 <template>
-  <b-tooltip :label="`${series.start_date} - ${series.end_date}`" position="is-right" type="is-light">
+  <b-tooltip :label="`${series.start_date} - ${series.end_date}`" position="is-top" type="is-light">
     <span><span v-for="place in series.series">{{ place }}</span></span>
   </b-tooltip>
 </template>
