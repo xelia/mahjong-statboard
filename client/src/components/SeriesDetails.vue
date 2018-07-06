@@ -1,6 +1,8 @@
 <template>
   <b-tooltip :label="`${series.start_date} - ${series.end_date}`" position="is-top" type="is-light">
-    <span><span v-for="place in series.series">{{ place }}</span></span>
+    <span class="series-details">
+      <span v-for="(place, index) in series.series" :key="index">{{ place }}</span>
+    </span>
   </b-tooltip>
 </template>
 <script>
@@ -8,3 +10,8 @@
     props: ['series']
   }
 </script>
+<style scoped>
+  .series-details {
+    padding-left: 0.5em;
+  }
+</style>

@@ -3,7 +3,7 @@
     <h1 class="title">Удаление твинков</h1>
     <b-field label="Основной аккаунт" :message="errors.main_player" :type="errors.main_player ? 'is-danger' : ''">
       <b-select v-model="mainPlayer" :loading="loading">
-        <option v-for="player in playersList" :value="player.name">
+        <option v-for="player in playersList" :value="player.name" :key="player.id">
           {{ player.name }} ({{ player.games_count }})
         </option>
       </b-select>
@@ -14,7 +14,7 @@
       :type="errors.player_to_delete ? 'is-danger' : ''"
     >
       <b-select v-model="playerToDelete" :loading="loading">
-        <option v-for="player in playersList" :value="player.name">
+        <option v-for="player in playersList" :value="player.name" :key="player.id">
           {{ player.name }} ({{ player.games_count }})
         </option>
       </b-select>

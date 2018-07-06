@@ -7,7 +7,7 @@
       :current.sync="page"
       @change="changePage($event)"
     />
-    <div class="container" v-for="(games, date) in groupedGames">
+    <div class="container" v-for="(games, date) in groupedGames" :key="date">
       <nav class="level">
         <p class="subtitle level-item">{{ date }}</p>
       </nav>

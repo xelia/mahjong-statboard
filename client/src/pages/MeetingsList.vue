@@ -19,7 +19,7 @@
           {{ props.row.players_count }}
         </b-table-column>
         <b-table-column field="players" label="Игроки">
-          <div class="tags"><span v-for="player in props.row.players" class="tag">{{ player }} </span></div>
+          <div class="tags"><span v-for="player in props.row.players" class="tag" :key="player">{{ player }} </span></div>
         </b-table-column>
       </template>
     </b-table>
