@@ -14,7 +14,7 @@ from mahjong_statboard.legacy import add_games
 
 
 class InstanceFilter(FilterSet):
-    domain = CharFilter(name='domains__name', label='Domain')
+    domain = CharFilter(field_name='domains__name', label='Domain')
 
     class Meta:
         model = models.Instance
@@ -25,11 +25,11 @@ class InstancesViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = models.Instance.objects.all()
     serializer_class = serializers.InstanceSerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_class = InstanceFilter
+    filterset_class = InstanceFilter
 
 
 class GameFilter(FilterSet):
-    player = CharFilter(name='gameresult__player__name', label='Player')
+    player = CharFilter(field_name='gameresult__player__name', label='Player')
 
     class Meta:
         model = models.Game
@@ -39,7 +39,7 @@ class GameFilter(FilterSet):
 class GamesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.GameSerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_class = GameFilter
+    filterset_class = GameFilter
 
     def get_queryset(self):
         return models.Game.objects.filter(
@@ -80,7 +80,7 @@ class PlayersViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = serializers.PlayerSerializer
     pagination_class = None
     filter_backends = (DjangoFilterBackend,)
-    filter_class = PlayerFilter
+    filterset_class = PlayerFilter
 
     @detail_route()
     def opponents(self, request, instance_pk, pk):
@@ -124,7 +124,7 @@ class PlayerMergeView(generics.GenericAPIView):
 class RatingsViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('archived', )
+    filterset_fields = ('archived', )
 
     def get_serializer_class(self):
         if self.request.GET.get('stats'):
@@ -144,7 +144,7 @@ class StatsViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = None
     serializer_class = serializers.StatsSerializer
     filter_backends = (DjangoFilterBackend, )
-    filter_fields = ('player', 'rating',)
+    filterset_fields = ('player', 'rating',)
 
     def get_queryset(self):
         return models.Stats.objects.filter(

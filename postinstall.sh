@@ -8,7 +8,7 @@ pipenv run python manage.py migrate &&
 pipenv run python manage.py collectstatic --noinput &&
 
 cd ../client &&
-npm update &&
+npm install &&
 npm run build &&
 cd .. &&
 
