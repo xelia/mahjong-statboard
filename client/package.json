@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "buefy": "^0.6.3",
+    "buefy": "^0.7.2",
     "bulma": "^0.6.2",
     "font-awesome": "^4.7.0",
     "js-cookie": "^2.1.4",
